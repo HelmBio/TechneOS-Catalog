@@ -1,0 +1,41 @@
+# Virtual root for the techneos-catalog repo.
+#
+# This is intentionally NOT a package and NOT a uv workspace: every catalog entry
+# under tools/ and agents/ is a self-contained package with its own pyproject +
+# lock, built and published individually. This root exists only to:
+#   1. pin the tooling env to Python 3.12, and
+#   2. provide `techneos-management` to the register scripts that have NO pyproject of
+#      their own (datasets/, tasks/, pipelines/, apps/) via the `tooling` group:
+#        uv run --group tooling python datasets/<slug>/register.py
+#
+# The package index (the local devpi that serves techneos-management) is declared
+# in [[tool.uv.index]] below, so `uv run`/`uv sync` resolve it with no extra setup.
+# When the platform's production deployment lands, the index becomes environment-
+# specific and moves to per-env config. See README.md.
+
+[project]
+# Metadata only — `[tool.uv] package = false` below keeps this from being built or
+# installed. Present so uv resolves the tooling env against Python 3.12 (matching
+# the platform wheels + catalog tools) instead of defaulting to the newest CPython.
+name = "techneos-catalog"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+
+[dependency-groups]
+# Build/register tooling for the non-package scripts (datasets/tasks/pipelines/apps).
+# The 6 packaged tools/agent carry techneos-management in their own `publish` group.
+tooling = [
+    "techneos-management>=0.1,<1",
+    "python-dotenv>=1.0",
+]
+
+[tool.uv]
+# Do not implicitly treat this directory as a buildable package.
+package = false
+
+# Local dev package index (devpi from the platform's dev stack) — where uv resolves
+# techneos-management for the register scripts.
+[[tool.uv.index]]
+name = "devpi"
+url = "http://localhost:3141/simple/"
+default = true

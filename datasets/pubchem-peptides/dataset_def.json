@@ -1,0 +1,65 @@
+{
+  "name": "PubChem Peptides",
+  "slug": "pubchem-peptides",
+  "description": "Peptide compounds extracted from PubChem. Each record includes PubChem CID, peptide title/name, one-letter amino acid sequence, HELM notation, PLN notation, IUPAC name, condensed IUPAC name, and SMILES representation.",
+  "data_type": "tabular",
+  "file_format": "tsv",
+  "tags": [
+    "pubchem",
+    "peptides",
+    "smiles",
+    "sequence",
+    "helm",
+    "iupac"
+  ],
+  "data_schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "PubChem Peptide Record",
+    "description": "One row of the PubChem Peptides TSV — a single peptide compound from PubChem.",
+    "type": "object",
+    "required": ["CID", "SMILES"],
+    "properties": {
+      "CID": {
+        "type": "string",
+        "description": "PubChem compound identifier."
+      },
+      "Title": {
+        "type": "string",
+        "description": "Peptide title or common name."
+      },
+      "Sequence": {
+        "type": "string",
+        "description": "One-letter amino acid sequence."
+      },
+      "HELM": {
+        "type": "string",
+        "description": "HELM (Hierarchical Editing Language for Macromolecules) notation."
+      },
+      "PLN": {
+        "type": "string",
+        "description": "PLN (Peptide Ligand Notation) representation."
+      },
+      "IUPAC": {
+        "type": "string",
+        "description": "Full IUPAC chemical name."
+      },
+      "IUPAC_Condensed": {
+        "type": "string",
+        "description": "Condensed IUPAC name."
+      },
+      "SMILES": {
+        "type": "string",
+        "description": "SMILES string for the molecule."
+      }
+    },
+    "additionalProperties": false
+  },
+  "metadata": {
+    "source": "https://pubchem.ncbi.nlm.nih.gov",
+    "license": "Public domain (U.S. Government work)",
+    "format": "TSV (CID, Title, Sequence, HELM, PLN, IUPAC, IUPAC_Condensed, SMILES)",
+    "full_dataset_size": "~115M compounds in PubChem; peptide subset depends on filtering criteria",
+    "citation": "Kim S, Chen J, Cheng T, et al. PubChem 2023 update. Nucleic Acids Res. 2023 Jan 6;51(D1):D1373-D1380."
+  },
+  "is_public": true
+}

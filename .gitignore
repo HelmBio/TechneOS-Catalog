@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+dist/
+build/
+*.egg-info/
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+uv.lock
+
+# Env / secrets — real env files are never committed (.env.example is the template)
+.env
+.env.dev
+.env.local
+.env.*.local
+
+# Node / Next.js (apps)
+node_modules/
+.next/
+.turbo/
+*.tsbuildinfo
+
+# OS
+.DS_Store
+
+# Catalog run outputs
+**/examples/out.json

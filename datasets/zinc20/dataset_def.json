@@ -1,0 +1,48 @@
+{
+  "name": "ZINC20",
+  "slug": "zinc20",
+  "description": "A sample from the ZINC20 database (sourced from HuggingFace zpn/zinc20, ~1B molecules total). Contains purchasable, drug-like compounds with SMILES, SELFIES representations, and ZINC IDs. Intended as a lightweight reference dataset for development, testing, and benchmarking. For the full dataset see https://huggingface.co/datasets/zpn/zinc20",
+  "data_type": "tabular",
+  "file_format": "tsv",
+  "tags": [
+    "zinc",
+    "zinc20",
+    "drug-like",
+    "smiles",
+    "selfies",
+    "benchmark",
+    "virtual-screening",
+    "huggingface"
+  ],
+  "data_schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "ZINC20 Molecule Record",
+    "description": "One row of the ZINC20 TSV sample — a single purchasable, drug-like molecule.",
+    "type": "object",
+    "required": ["smiles", "selfies", "zinc_id"],
+    "properties": {
+      "smiles": {
+        "type": "string",
+        "description": "Canonical SMILES string for the molecule."
+      },
+      "selfies": {
+        "type": "string",
+        "description": "SELFIES (SELF-referencing Embedded Strings) representation of the molecule."
+      },
+      "zinc_id": {
+        "type": "string",
+        "description": "ZINC database identifier (e.g., ZINC000000000123)."
+      }
+    },
+    "additionalProperties": false
+  },
+  "metadata": {
+    "source": "https://huggingface.co/datasets/zpn/zinc20",
+    "original_source": "https://zinc20.docking.org",
+    "license": "MIT",
+    "format": "TSV (smiles, selfies, zinc_id)",
+    "full_dataset_size": "~1B molecules",
+    "citation": "Irwin, J.J., Tang, K.G., Young, J. et al. ZINC20 — A Free Ultralarge-Scale Chemical Database for Ligand Discovery. J. Chem. Inf. Model. 2020, 60, 12, 6065-6073."
+  },
+  "is_public": true
+}

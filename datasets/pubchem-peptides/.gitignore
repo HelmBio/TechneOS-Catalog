@@ -1,0 +1,4 @@
+data/*
+!data/.gitkeep
+!data/pubchem*.tsv
+__pycache__/
