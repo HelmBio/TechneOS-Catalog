@@ -31,14 +31,32 @@ register script and runs it with the right uv invocation, sourcing `.env.dev` fo
 the gateway URL:
 
 ```bash
-bin/register.sh datasets/<slug> --upsert
+bin/register.sh datasets/<slug> --upsert   # def-only entry
+bin/register.sh agents/<slug>              # packaged entry (builds + publishes a wheel)
 ```
 
-Or invoke uv directly — a dataset registers through `techneos-management` (the root
-`tooling` group), with no wheel or image to build:
+The invocation depends on whether the entry is a **package**:
+
+- **Packaged** (has its own `pyproject.toml` — agents, tools): the register script
+  imports its own package at pre-flight, so it runs **from the package dir** with the
+  `publish` group. Its `pyproject.toml` declares the same `[[tool.uv.index]]` so uv
+  resolves `techneos-management` there too.
+- **Def-only** (datasets, tasks, pipelines, apps): nothing to build — runs from the
+  repo root with the `tooling` group.
 
 ```bash
-uv run --group tooling python datasets/<slug>/register.py
+uv run --group tooling python datasets/<slug>/register.py            # def-only
+( cd agents/<slug> && uv run --group publish python build_and_register.py )   # packaged
+```
+
+## Per-package dev (agents, tools)
+
+Each packaged entry is self-contained — its own deps, its own tests:
+
+```bash
+cd agents/<slug>
+uv sync --group dev
+uv run pytest
 ```
 
 ## Removing entries
@@ -50,6 +68,10 @@ its versions/runs/artifacts. `--dry-run` previews the delete first.
 
 ```bash
 bin/dataset_removal.sh <slug> --dry-run
+bin/agent_removal.sh <slug> --dry-run
 ```
+
+Removing an agent deletes its `AgentDefinition` row and cascades to its runs; the
+wheel on the package index is **not** removed (index retention is a separate concern).
 
 (User removal is platform-admin, not catalog — it stays in the platform repo.)

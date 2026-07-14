@@ -15,9 +15,10 @@ set -euo pipefail
 # register.py is found automatically); you may also pass the script path directly.
 #
 # How the invocation is chosen:
-#   * PYPI tools import their entry point at pre-flight, so they need the package's
-#     own deps (e.g. rdkit) — run from the package dir with the `publish` group.
-#   * Everything else (container tools, agents, apps, datasets, tasks, pipelines)
+#   * A packaged entry (one with its own pyproject.toml — tools, agents) imports its
+#     own package at pre-flight, so it needs that package's deps — run from the
+#     package dir with the `publish` group.
+#   * Everything else (datasets, tasks, pipelines, apps)
 #     only needs techneos-management — run from the repo root with the `tooling` group.
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -48,8 +49,8 @@ esac
 # shellcheck disable=SC1091
 [ -f "$REPO_ROOT/.env.dev" ] && { set -a; . "$REPO_ROOT/.env.dev"; set +a; }
 
-if grep -q "import_module" "$script"; then
-  echo "=== $script (pypi: package dir + publish group) ==="
+if [ -f "$dir/pyproject.toml" ]; then
+  echo "=== $script (packaged: package dir + publish group) ==="
   ( cd "$dir" && exec uv run --group publish python "$(basename "$script")" "$@" )
 else
   echo "=== $script (root + tooling group) ==="

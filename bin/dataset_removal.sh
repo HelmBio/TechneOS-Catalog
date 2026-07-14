@@ -15,8 +15,8 @@
 # On first run the script prompts for admin login credentials and caches the
 # token in ~/.techneos/{env}_token.json for reuse on subsequent runs.
 #
-# Environment-specific config (API URL, MinIO) is resolved from
-# ``--env`` and ``~/.techneos/config.json`` — no environment variables needed.
+# The API URL comes from PLATFORM_API_URL in .env.dev (sourced below), defaulting
+# to the local stack.
 #
 # Examples:
 #   ./bin/dataset_removal.sh <slug>

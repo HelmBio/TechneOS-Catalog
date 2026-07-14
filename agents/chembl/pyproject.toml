@@ -1,0 +1,51 @@
+[project]
+name = "chembl-agent"
+version = "0.1.0"
+description = "ChEMBL drug discovery research agent for the TechneOS platform"
+# 3.12 to match the agent-service runtime image. The wheel is installed
+# at agent-service startup via `pip install`, so this is the python_requires
+# the runtime must honor.
+requires-python = ">=3.12,<3.13"
+
+# chembl-agent is a tool-only wheel: it ships the ChEMBL tool callables
+# (`CHEMBL_TOOLS`) plus `agent_def.json`, and nothing else. The agent-service
+# installs the wheel at startup, registers the tools via the `techneos.agents` entry
+# point, and assembles the PydanticAI agent itself from the DB AgentDefinition
+# (`core.agent.bridge.build_agent_from_definition`). The wheel therefore needs
+# no agent-framework deps — just `httpx` for the ChEMBL REST calls.
+dependencies = [
+    "httpx",
+]
+
+[project.entry-points."techneos.agents"]
+chembl = "chembl_agent"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/chembl_agent"]
+
+[tool.techneos]
+delivery = "pypi"
+package_name = "chembl-agent"
+# Entry-point group `techneos.agents` is what the agent-service enumerates at
+# startup. The string here is the module that's loaded; it must expose a
+# top-level `<NAME>_TOOLS` list (here `CHEMBL_TOOLS`) of plain async callables.
+entry_point = "chembl_agent"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24",
+]
+# Build tooling for build_and_register.py — not shipped in the wheel.
+publish = ["techneos-management>=0.1,<1"]
+
+# Local dev package index (devpi from the platform's dev stack) — where uv resolves
+# techneos-management when this package is built/registered from its own directory.
+[[tool.uv.index]]
+name = "devpi"
+url = "http://localhost:3141/simple/"
+default = true
