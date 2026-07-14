@@ -1,0 +1,47 @@
+[project]
+name = "molecule-property-calculator"
+version = "0.1.0"
+description = "RDKit-powered molecular property calculator from SMILES strings"
+# 3.12 to match techneos/tool-runtime (pypi tools install into that worker image
+# at dispatch time, and rdkit wheels lag newer Python).
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    # rdkit unbounded for now — matches the existing version. Worth pinning in
+    # a follow-up once we have an integration suite to verify upgrades against.
+    "rdkit",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/molecule_property_calculator"]
+
+[tool.techneos]
+delivery = "pypi"
+package_name = "molecule-property-calculator"
+entry_point = "molecule_property_calculator.calculator:run"
+
+# Contribute calculate_molecule_properties to the built-in Platform Assistant
+# agent. Discovered lazily by core via importlib.metadata.entry_points() —
+# core has NO hard dep on this package; if mpc isn't installed in the running
+# environment, the assistant simply doesn't expose the tool. This keeps the
+# layering clean (core foundation -> catalog leaves, never the reverse).
+[project.entry-points."techneos.platform_assistant_tools"]
+calculate_molecule_properties = "molecule_property_calculator.platform_plugin_tools:calculate_molecule_properties"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24",
+]
+# Build tooling for build_and_register.py — not shipped in the wheel.
+publish = ["techneos-management>=0.1,<1"]
+
+# Local dev package index (devpi from the platform's dev stack) — where uv resolves
+# techneos-management when this package is built/registered from its own directory.
+[[tool.uv.index]]
+name = "devpi"
+url = "http://localhost:3141/simple/"
+default = true

@@ -1,0 +1,36 @@
+[project]
+name = "autodock-vina"
+version = "0.1.0"
+description = "Dock representative molecules into a protein receptor with AutoDock Vina and rank them by predicted binding affinity (RDKit + Meeko ligand prep, OpenBabel receptor prep)."
+# 3.12 matches techneos/tool-runtime; rdkit/meeko binary deps lag newer Python.
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "techneos-tool-runtime>=0.1,<1",
+    "rdkit",
+    "meeko>=0.5,<0.7",
+    "numpy",
+    "scipy",  # required by meeko (meeko.receptor_pdbqt imports scipy.spatial)
+    "matplotlib>=3.7,<4",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/autodock_vina"]
+
+[tool.techneos]
+# Container-only: the AutoDock Vina and OpenBabel binaries are native; this tool
+# installs them in its own Dockerfile on top of the shared techneos/tool-runtime base.
+delivery = "container"
+docker_image = "techneos/autodock-vina"
+docker_base = "techneos/tool-runtime"
+entry_point = "autodock_vina.docking:run"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+]
+# Build tooling for build_and_register.py — not shipped in the wheel.
+publish = ["techneos-management>=0.1,<1"]

@@ -350,3 +350,11 @@ URLs, so your container sees plain paths (`/`, `/healthz`, `/static/foo`).
 Outgoing HTML must point at the prefixed URL for static assets — for
 Next.js, set `assetPrefix` (not `basePath`) at build time via an env
 var. The structure-viewer Dockerfile shows the pattern.
+
+---
+
+## See Also
+
+- [Dataset Registration Guide](dataset-guide.md) — Registering and versioning datasets (ZINC20 example)
+- [Tool Registration Guide](tool-guide.md) — Registering computational tools (pypi and container)
+- [Agent Building Guide](agent-guide.md) — Building and deploying AI agents

@@ -14,12 +14,14 @@ set -euo pipefail
 # <type/slug> is a catalog entry directory (its build_and_register.py or
 # register.py is found automatically); you may also pass the script path directly.
 #
-# How the invocation is chosen:
-#   * A packaged entry (one with its own pyproject.toml — tools, agents) imports its
-#     own package at pre-flight, so it needs that package's deps — run from the
-#     package dir with the `publish` group.
-#   * Everything else (datasets, tasks, pipelines, apps)
-#     only needs techneos-management — run from the repo root with the `tooling` group.
+# How the invocation is chosen, from `delivery` in the entry's [tool.techneos]:
+#   * delivery = "pypi" (pypi tools, agents): the register script imports its own
+#     entry point at pre-flight, so it needs that package's deps (e.g. rdkit) —
+#     run from the package dir with the `publish` group.
+#   * everything else (container tools, and the def-only types: datasets, tasks,
+#     pipelines, apps): a container tool validates its entry point statically and
+#     builds an image, so its deps live in the image, not on the host. These need
+#     only techneos-management — run from the repo root with the `tooling` group.
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$REPO_ROOT"
@@ -49,8 +51,13 @@ esac
 # shellcheck disable=SC1091
 [ -f "$REPO_ROOT/.env.dev" ] && { set -a; . "$REPO_ROOT/.env.dev"; set +a; }
 
+delivery=""
 if [ -f "$dir/pyproject.toml" ]; then
-  echo "=== $script (packaged: package dir + publish group) ==="
+  delivery="$(sed -n 's/^delivery[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' "$dir/pyproject.toml" | head -1)"
+fi
+
+if [ "$delivery" = "pypi" ]; then
+  echo "=== $script (pypi: package dir + publish group) ==="
   ( cd "$dir" && exec uv run --group publish python "$(basename "$script")" "$@" )
 else
   echo "=== $script (root + tooling group) ==="

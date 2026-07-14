@@ -1,0 +1,7 @@
+[
+  {"smiles": "CC(=O)Oc1ccccc1C(=O)O", "id": "aspirin"},
+  {"smiles": "CC(C)Cc1ccc(cc1)C(C)C(=O)O", "id": "ibuprofen"},
+  {"smiles": "CN1C=NC2=C1C(=O)N(C(=O)N2C)C", "id": "caffeine"},
+  {"smiles": "CC(=O)Nc1ccc(O)cc1", "id": "paracetamol"},
+  {"smiles": "OC(=O)c1ccccc1O", "id": "salicylic-acid"}
+]

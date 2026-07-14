@@ -1,0 +1,8 @@
+[
+  {"sample_id": "S-001", "temperature": 25.0, "yield_pct": 82.5, "purity_pct": 98.2, "passed_qc": true},
+  {"sample_id": "S-002", "temperature": 30.0, "yield_pct": 76.1, "purity_pct": 95.4, "passed_qc": true},
+  {"sample_id": "S-003", "temperature": 35.0, "yield_pct": 68.9, "purity_pct": 91.0, "passed_qc": false},
+  {"sample_id": "S-004", "temperature": 40.0, "yield_pct": 60.3, "purity_pct": 88.7, "passed_qc": false},
+  {"sample_id": "S-005", "temperature": 25.0, "yield_pct": 85.2, "purity_pct": 99.1, "passed_qc": true},
+  {"sample_id": "S-006", "temperature": 30.0, "yield_pct": 79.4, "purity_pct": 96.8, "passed_qc": true}
+]

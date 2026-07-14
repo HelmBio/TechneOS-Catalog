@@ -32,22 +32,28 @@ the gateway URL:
 
 ```bash
 bin/register.sh datasets/<slug> --upsert   # def-only entry
-bin/register.sh agents/<slug>              # packaged entry (builds + publishes a wheel)
+bin/register.sh agents/<slug>              # publishes a wheel
+bin/register.sh tools/<slug>               # publishes a wheel, or builds an image
+bin/register.sh apps/<slug>                # builds an image + deploys
 ```
 
-The invocation depends on whether the entry is a **package**:
+The invocation is chosen from `delivery` in the entry's `[tool.techneos]`:
 
-- **Packaged** (has its own `pyproject.toml` — agents, tools): the register script
-  imports its own package at pre-flight, so it runs **from the package dir** with the
-  `publish` group. Its `pyproject.toml` declares the same `[[tool.uv.index]]` so uv
-  resolves `techneos-management` there too.
-- **Def-only** (datasets, tasks, pipelines, apps): nothing to build — runs from the
-  repo root with the `tooling` group.
+- **`delivery = "pypi"`** (pypi tools, agents): the register script imports its own
+  entry point at pre-flight, so it needs that package's deps (e.g. rdkit) and runs
+  **from the package dir** with the `publish` group. Those packages declare their own
+  `[[tool.uv.index]]` so uv resolves `techneos-management` there too.
+- **everything else** (container tools, and the def-only types — datasets, tasks,
+  pipelines, apps): a container tool validates its entry point *statically* and builds
+  an image, so its deps live in the image, never on the host. These need only
+  `techneos-management` and run from the repo root with the `tooling` group.
 
-```bash
-uv run --group tooling python datasets/<slug>/register.py            # def-only
-( cd agents/<slug> && uv run --group publish python build_and_register.py )   # packaged
-```
+## Activating a tool version
+
+Registering a tool does **not** make it runnable. A new version lands as `draft`, and
+a run against a tool with no `active` version is rejected (`409`). Transitions are
+enforced one step at a time — `draft` cannot jump to `active` — so promote it through
+`testing` (via the portal, or `PATCH /api/v1/tools/{id}/versions/{vid}`).
 
 ## Per-package dev (agents, tools)
 
@@ -69,6 +75,8 @@ its versions/runs/artifacts. `--dry-run` previews the delete first.
 ```bash
 bin/dataset_removal.sh <slug> --dry-run
 bin/agent_removal.sh <slug> --dry-run
+bin/app_removal.sh <slug> --dry-run
+bin/tool_removal.sh <slug> --dry-run    # optional trailing version: <slug> v2
 ```
 
 Removing an agent deletes its `AgentDefinition` row and cascades to its runs; the

@@ -1,0 +1,5 @@
+{
+  "filter_catalogs": ["PAINS", "BRENK"],
+  "reactive_smarts": true,
+  "include_passing": true
+}

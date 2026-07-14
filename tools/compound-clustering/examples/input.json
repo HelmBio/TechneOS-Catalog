@@ -1,0 +1,12 @@
+[
+  {"smiles": "CC(=O)Oc1ccccc1C(=O)O", "id": "aspirin"},
+  {"smiles": "CC(=O)Oc1ccccc1C(=O)OC", "id": "methyl-acetylsalicylate"},
+  {"smiles": "OC(=O)c1ccccc1OC(=O)CC", "id": "propanoyl-salicylate"},
+  {"smiles": "Cc1ccc(cc1)S(=O)(=O)N", "id": "toluenesulfonamide"},
+  {"smiles": "Nc1ccc(cc1)S(=O)(=O)N", "id": "sulfanilamide"},
+  {"smiles": "Cc1ccc(cc1)S(=O)(=O)NC", "id": "n-methyl-toluenesulfonamide"},
+  {"smiles": "O=C(Nc1ccccc1)c1ccccc1", "id": "benzanilide"},
+  {"smiles": "O=C(Nc1ccc(C)cc1)c1ccccc1", "id": "methyl-benzanilide"},
+  {"smiles": "CC(C)Cc1ccc(cc1)C(C)C(=O)O", "id": "ibuprofen"},
+  {"smiles": "OCC1OC(O)C(O)C(O)C1O", "id": "glucose-outlier"}
+]

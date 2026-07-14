@@ -1,0 +1,34 @@
+[project]
+name = "dataset-profiler"
+version = "0.1.0"
+description = "Dataset profiler for the TechneOS platform — summarises tabular datasets (CSV/TSV/JSON) into HTML or PDF reports with per-column distribution or heatmap plots."
+# 3.12 matches techneos/tool-runtime; weasyprint's binary deps lag newer Python.
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "techneos-tool-runtime>=0.1,<1",
+    "pandas>=2.0,<3",
+    "matplotlib>=3.7,<4",
+    "jinja2>=3.1,<4",
+    "weasyprint>=60,<70",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/dataset_profiler"]
+
+[tool.techneos]
+# Container-only: WeasyPrint's libpango/libcairo deps are heavyweight; this tool
+# installs them in its own Dockerfile on top of the shared techneos/tool-runtime base.
+delivery = "container"
+docker_image = "techneos/dataset-profiler"
+docker_base = "techneos/tool-runtime"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+]
+# Build tooling for build_and_register.py — not shipped in the wheel.
+publish = ["techneos-management>=0.1,<1"]

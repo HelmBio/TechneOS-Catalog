@@ -1,0 +1,76 @@
+{
+  "name": "Dataset Profiler",
+  "slug": "dataset-profiler",
+  "description": "Container tool that profiles any tabular dataset (CSV, TSV, or JSON) into an HTML or PDF report. Concatenates the inputs, identifies numeric (non-boolean) columns, renders per-column distribution histograms or a sample x metric heatmap, and emits a Jinja-templated report — PDF rendering via WeasyPrint. Works standalone on an uploaded file or inside a pipeline on upstream artifacts.",
+  "category": "data-processing",
+  "tool_type": "container",
+  "tags": ["profiling", "summary", "tabular", "pdf", "html"],
+  "is_public": true,
+  "input_schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "title": "dataset-profiler inputs",
+    "description": "Tabular data to summarise. The single `dataset` field is the standalone upload (resolved by the worker to inputs['dataset_file']). In a pipeline this field is left empty: the orchestrator injects upstream step artifacts under inputs['upstream'] / inputs['upstream_csvs'] from the step's `depends_on`, so no input field is needed for them.",
+    "properties": {
+      "dataset": {
+        "type": "string",
+        "description": "A tabular/structured data file (CSV, TSV, or JSON) to summarise. Uploaded/pasted/selected by the user; the worker hands the tool the resolved path as `dataset_file`."
+      }
+    },
+    "additionalProperties": true
+  },
+  "output_schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "title": "dataset-profiler result",
+    "description": "Dict returned by run(...) and written to /work/output/result.json by the runtime. Side-effect artifacts (report.{pdf,html}, plot_*.png) are written under /work/output/ as well.",
+    "properties": {
+      "report_file": {"type": "string", "description": "Filename of the rendered report under /work/output/"},
+      "format": {"type": "string", "enum": ["pdf", "html"]},
+      "n_rows": {"type": "integer", "minimum": 0, "description": "Total rows across all concatenated input tables"},
+      "numeric_columns": {"type": "array", "items": {"type": "string"}, "description": "Numeric (non-boolean, non-identifier) columns that were plotted"},
+      "plots": {"type": "array", "items": {"type": "string"}, "description": "Histogram plot filenames (empty when include_plots is false)"}
+    },
+    "required": ["report_file", "format", "n_rows", "numeric_columns", "plots"]
+  },
+  "parameters_schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "title": "dataset-profiler parameters",
+    "properties": {
+      "format": {
+        "type": "string",
+        "enum": ["pdf", "html"],
+        "default": "pdf",
+        "description": "Output format."
+      },
+      "include_plots": {
+        "type": "boolean",
+        "default": true,
+        "description": "Render per-column distribution histograms and embed them in the report."
+      },
+      "title": {
+        "type": "string",
+        "default": "Data Summary Report",
+        "description": "Report title shown on the cover page."
+      },
+      "input_format": {
+        "type": "string",
+        "enum": ["auto", "csv", "tsv", "json"],
+        "default": "auto",
+        "description": "Force a reader for the input tables. `auto` infers from each file's extension; set csv/tsv/json when extensions are missing or misleading."
+      },
+      "plot_type": {
+        "type": "string",
+        "enum": ["histogram", "heatmap"],
+        "default": "histogram",
+        "description": "`histogram` shows each numeric column's distribution. `heatmap` renders a single rows=samples x cols=numeric heatmap, rows labelled by the first non-numeric column (e.g. an id) and each column normalised independently; it falls back to histograms when the table has more than 50 rows."
+      }
+    },
+    "additionalProperties": false
+  },
+  "resource_requirements": {
+    "cpu": "0.5",
+    "memory": "512Mi"
+  }
+}

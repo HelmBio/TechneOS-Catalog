@@ -1,0 +1,139 @@
+{
+  "name": "Structure Alerts",
+  "slug": "structure-alerts",
+  "description": "Screens compounds (e.g. from an HTS campaign) for PAINS pan-assay-interference substructures and reactive / unstable functional groups, reporting the specific reason each compound is flagged. Matching uses RDKit's built-in FilterCatalog (PAINS A/B/C, Brenk, NIH, ZINC, ChEMBL) plus a curated reactive-group SMARTS list. Alert sets are selectable at runtime. Returns both a keep-list and an exclude-list with per-compound reasons.",
+  "category": "general",
+  "tool_type": "pypi",
+  "tags": [
+    "cheminformatics",
+    "pains",
+    "reactive-groups",
+    "structure-alerts",
+    "hts",
+    "compound-triage",
+    "rdkit",
+    "smiles"
+  ],
+  "is_public": true,
+  "input_schema": {
+    "type": "object",
+    "input_kind": "smiles_list",
+    "properties": {
+      "compounds": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "smiles": { "type": "string", "description": "SMILES string" },
+            "id": { "type": "string", "description": "Unique identifier for the compound" }
+          },
+          "required": ["smiles", "id"]
+        },
+        "description": "List of {smiles, id} compound objects; both fields required",
+        "x-unique-keys": ["id"]
+      }
+    },
+    "required": ["compounds"],
+    "example": {
+      "compounds": [
+        {"smiles": "CN1C=NC2=C1C(=O)N(C(=O)N2C)C", "id": "caffeine"},
+        {"smiles": "Oc1ccccc1O", "id": "catechol-pains"},
+        {"smiles": "CC(=O)Cl", "id": "acetyl-chloride-reactive"}
+      ]
+    }
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "results": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["id", "smiles", "passed", "num_alerts", "alerts"],
+          "properties": {
+            "id": { "type": "string", "description": "Unique identifier passed through from input" },
+            "smiles": { "type": "string", "description": "Input SMILES string" },
+            "canonical_smiles": { "type": "string" },
+            "passed": { "type": "boolean", "description": "True if the compound triggers no alerts" },
+            "num_alerts": { "type": "integer" },
+            "alerts": {
+              "type": "array",
+              "description": "Reasons the compound is flagged; empty when passed=true",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "source": { "type": "string", "description": "Alert set that fired (e.g. PAINS_B, Brenk, NIH, ChEMBL23_Dundee, reactive_smarts)" },
+                  "category": { "type": "string", "enum": ["pains", "reactive", "medchem"] },
+                  "description": { "type": "string", "description": "Human-readable substructure name — the exclusion reason" }
+                }
+              }
+            }
+          }
+        },
+        "description": "Per-molecule screening results"
+      },
+      "passed": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Keep-list: ids of compounds with zero alerts"
+      },
+      "flagged": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Exclude-list: ids of compounds with >= 1 alert"
+      },
+      "errors": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string" },
+            "smiles": { "type": "string" }
+          }
+        },
+        "description": "Compounds whose SMILES could not be parsed, as {id, smiles}"
+      },
+      "summary": {
+        "type": "object",
+        "properties": {
+          "total": { "type": "integer" },
+          "passed": { "type": "integer" },
+          "flagged": { "type": "integer" },
+          "invalid": { "type": "integer" },
+          "by_source": { "type": "object", "description": "Alert count per source/alert-set" }
+        }
+      },
+      "count": { "type": "integer", "description": "Number of valid molecules screened" },
+      "params_used": { "type": "object", "description": "The parameters that were applied" }
+    },
+    "required": ["results", "passed", "flagged", "errors", "summary", "count", "params_used"]
+  },
+  "parameters_schema": {
+    "type": "object",
+    "properties": {
+      "filter_catalogs": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": ["PAINS", "PAINS_A", "PAINS_B", "PAINS_C", "BRENK", "NIH", "ZINC", "CHEMBL", "ALL"]
+        },
+        "description": "Which RDKit filter catalogs (structural-alert sets) to apply (case-insensitive). ALL enables every set.",
+        "default": ["PAINS", "BRENK"]
+      },
+      "reactive_smarts": {
+        "type": "boolean",
+        "description": "Also apply the curated reactive-group SMARTS list on top of the catalogs",
+        "default": true
+      },
+      "include_passing": {
+        "type": "boolean",
+        "description": "Include clean (passed) compounds in the results array; the passed list is always populated",
+        "default": true
+      }
+    }
+  },
+  "resource_requirements": {
+    "cpu": "0.5",
+    "memory": "512Mi"
+  }
+}

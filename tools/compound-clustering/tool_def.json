@@ -1,0 +1,178 @@
+{
+  "name": "Compound Clustering",
+  "slug": "compound-clustering",
+  "description": "Groups a list of compounds (e.g. the keep-list that survived structure-alerts triage) into distinct chemical families. Three methods are selectable at runtime: Taylor-Butina clustering on Morgan/ECFP fingerprints + Tanimoto distance (auto-discovers the number of families), Bemis-Murcko scaffold grouping (each family shares one ring-system core), or scikit-learn k-means at a fixed cluster count. Returns a per-compound cluster assignment plus a per-cluster summary with a representative for each family. Built on RDKit and scikit-learn.",
+  "category": "general",
+  "tool_type": "pypi",
+  "tags": [
+    "cheminformatics",
+    "clustering",
+    "chemical-space",
+    "chemical-families",
+    "butina",
+    "murcko-scaffold",
+    "diversity",
+    "fingerprints",
+    "rdkit",
+    "scikit-learn",
+    "smiles"
+  ],
+  "is_public": true,
+  "input_schema": {
+    "type": "object",
+    "input_kind": "smiles_list",
+    "properties": {
+      "compounds": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "smiles": { "type": "string", "description": "SMILES string" },
+            "id": { "type": "string", "description": "Unique identifier for the compound" }
+          },
+          "required": ["smiles", "id"]
+        },
+        "description": "List of {smiles, id} compound objects; both fields required",
+        "x-unique-keys": ["id"]
+      }
+    },
+    "required": ["compounds"],
+    "example": {
+      "compounds": [
+        {"smiles": "CC(=O)Oc1ccccc1C(=O)O", "id": "aspirin"},
+        {"smiles": "Nc1ccc(cc1)S(=O)(=O)N", "id": "sulfanilamide"},
+        {"smiles": "OCC1OC(O)C(O)C(O)C1O", "id": "glucose"}
+      ]
+    }
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "results": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["id", "smiles", "cluster", "is_representative"],
+          "properties": {
+            "id": { "type": "string", "description": "Unique identifier passed through from input" },
+            "smiles": { "type": "string", "description": "Input SMILES string" },
+            "canonical_smiles": { "type": "string" },
+            "cluster": { "type": "integer", "description": "1-based cluster (chemical family) id this compound was assigned to" },
+            "is_representative": { "type": "boolean", "description": "True if this compound is the representative (centroid / core member) of its cluster" },
+            "scaffold_smiles": { "type": "string", "description": "Bemis-Murcko scaffold SMILES (scaffold method only)" }
+          }
+        },
+        "description": "Per-molecule cluster assignment"
+      },
+      "clusters": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["cluster_id", "size", "representative_id", "member_ids"],
+          "properties": {
+            "cluster_id": { "type": "integer" },
+            "size": { "type": "integer" },
+            "representative_id": { "type": "string", "description": "id of the cluster's representative compound" },
+            "member_ids": { "type": "array", "items": { "type": "string" } },
+            "scaffold_smiles": { "type": "string", "description": "Shared scaffold SMILES (scaffold method only)" }
+          }
+        },
+        "description": "Per-cluster summary, ordered largest-first"
+      },
+      "errors": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string" },
+            "smiles": { "type": "string" }
+          }
+        },
+        "description": "Compounds whose SMILES could not be parsed, as {id, smiles}"
+      },
+      "summary": {
+        "type": "object",
+        "properties": {
+          "total": { "type": "integer" },
+          "num_clusters": { "type": "integer" },
+          "num_singletons": { "type": "integer", "description": "Clusters with exactly one member (lone chemotypes)" },
+          "largest_cluster_size": { "type": "integer" },
+          "invalid": { "type": "integer" },
+          "method": { "type": "string" }
+        }
+      },
+      "count": { "type": "integer", "description": "Number of valid molecules clustered" },
+      "params_used": { "type": "object", "description": "The parameters that were applied" },
+      "images": {
+        "type": "object",
+        "description": "Present only when a render was requested. Maps 'grid' / 'chemical_space' to the written PNG filename in the output folder, or '<name>_error' to the reason a render was skipped.",
+        "properties": {
+          "grid": { "type": "string", "description": "Filename of the per-cluster structure grid (clusters.png)" },
+          "chemical_space": { "type": "string", "description": "Filename of the PCA chemical-space scatter (chemical_space.png)" }
+        }
+      }
+    },
+    "required": ["results", "clusters", "errors", "summary", "count", "params_used"]
+  },
+  "parameters_schema": {
+    "type": "object",
+    "properties": {
+      "method": {
+        "type": "string",
+        "enum": ["butina", "scaffold", "kmeans"],
+        "description": "Clustering method. butina: similarity-threshold clustering (auto cluster count). scaffold: group by shared Bemis-Murcko scaffold. kmeans: fixed-count clustering on fingerprints.",
+        "default": "butina"
+      },
+      "fingerprint": {
+        "type": "string",
+        "enum": ["morgan", "ecfp4", "ecfp6", "maccs"],
+        "description": "Fingerprint for similarity (butina / kmeans). ecfp4/ecfp6 are Morgan at radius 2/3; maccs is the fixed 167-bit key set.",
+        "default": "morgan"
+      },
+      "radius": {
+        "type": "integer",
+        "minimum": 1,
+        "description": "Morgan fingerprint radius (ignored for ecfp4/ecfp6/maccs).",
+        "default": 2
+      },
+      "n_bits": {
+        "type": "integer",
+        "minimum": 64,
+        "description": "Morgan fingerprint length in bits.",
+        "default": 2048
+      },
+      "cutoff": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1,
+        "description": "Butina Tanimoto DISTANCE threshold; compounds within this distance cluster together (0.35 distance ≈ 0.65 similarity).",
+        "default": 0.35
+      },
+      "n_clusters": {
+        "type": "integer",
+        "minimum": 1,
+        "description": "Number of clusters for the kmeans method (capped at the number of compounds).",
+        "default": 5
+      },
+      "generic_scaffold": {
+        "type": "boolean",
+        "description": "Scaffold method only: reduce to the generic ring skeleton (atom/bond types erased) before grouping.",
+        "default": false
+      },
+      "render_grid": {
+        "type": "boolean",
+        "description": "Also render a 2D structure grid grouped by cluster (representative starred) to clusters.png in the output folder.",
+        "default": false
+      },
+      "render_chemical_space": {
+        "type": "boolean",
+        "description": "Also render a PCA scatter of Morgan fingerprints colored by cluster to chemical_space.png in the output folder (needs at least 3 valid molecules).",
+        "default": false
+      }
+    }
+  },
+  "resource_requirements": {
+    "cpu": "0.5",
+    "memory": "512Mi"
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "name": "Molecule Property Calculator",
+  "slug": "molecule-property-calculator",
+  "description": "RDKit-powered molecular property calculator from SMILES strings. Computes molecular weight, LogP, HBD, HBA, TPSA, rotatable bonds, aromatic rings, fraction sp3, and more. Accepts plain SMILES strings or objects with optional ids for tracking.",
+  "category": "general",
+  "tool_type": "pypi",
+  "tags": [
+    "cheminformatics",
+    "molecular-descriptors",
+    "rdkit",
+    "property-calculation",
+    "smiles"
+  ],
+  "is_public": true,
+  "input_schema": {
+    "type": "object",
+    "input_kind": "smiles_list",
+    "properties": {
+      "smiles": {
+        "type": "array",
+        "items": {
+          "oneOf": [
+            { "type": "string", "description": "Plain SMILES string" },
+            {
+              "type": "object",
+              "properties": {
+                "smiles": { "type": "string", "description": "SMILES string" },
+                "id": { "type": "string", "description": "Optional identifier for the molecule" }
+              },
+              "required": ["smiles"]
+            }
+          ]
+        },
+        "description": "List of SMILES strings or {smiles, id} objects"
+      }
+    },
+    "required": ["smiles"],
+    "example": {
+      "smiles": [
+        "CCO",
+        {"smiles": "c1ccccc1", "id": "benzene"},
+        {"smiles": "CN1C=NC2=C1C(=O)N(C(=O)N2C)C", "id": "caffeine"}
+      ]
+    }
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "results": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string", "description": "Optional identifier passed through from input" },
+            "smiles": { "type": "string", "description": "Input SMILES string" },
+            "valid": { "type": "boolean" },
+            "canonical_smiles": { "type": "string" },
+            "formula": { "type": "string" },
+            "mw": { "type": "number", "description": "Molecular Weight" },
+            "logp": { "type": "number", "description": "Wildman-Crippen LogP" },
+            "hbd": { "type": "integer", "description": "Hydrogen Bond Donors" },
+            "hba": { "type": "integer", "description": "Hydrogen Bond Acceptors" },
+            "tpsa": { "type": "number", "description": "Topological Polar Surface Area" },
+            "rotatable_bonds": { "type": "integer" },
+            "heavy_atom_count": { "type": "integer" },
+            "aromatic_rings": { "type": "integer" },
+            "aliphatic_rings": { "type": "integer" },
+            "fraction_sp3": { "type": "number" },
+            "num_rings": { "type": "integer" },
+            "num_heteroatoms": { "type": "integer" },
+            "num_saturated_rings": { "type": "integer" },
+            "num_atoms": { "type": "integer", "description": "Only present when detailed=true" },
+            "num_bonds": { "type": "integer", "description": "Only present when detailed=true" }
+          }
+        },
+        "description": "Per-molecule property results"
+      },
+      "errors": {
+        "type": "array",
+        "items": {
+          "oneOf": [
+            { "type": "string", "description": "Invalid SMILES string" },
+            {
+              "type": "object",
+              "properties": {
+                "smiles": { "type": "string" },
+                "id": { "type": "string" }
+              },
+              "description": "Invalid entry with identifier"
+            }
+          ]
+        },
+        "description": "Invalid entries that could not be processed"
+      },
+      "count": { "type": "integer", "description": "Number of successfully processed molecules" },
+      "params_used": { "type": "object", "description": "The parameters that were applied" }
+    },
+    "required": ["results", "errors", "count", "params_used"]
+  },
+  "parameters_schema": {
+    "type": "object",
+    "properties": {
+      "detailed": {
+        "type": "boolean",
+        "description": "Include extra per-molecule info (num_atoms, num_bonds)",
+        "default": false
+      }
+    }
+  },
+  "resource_requirements": {
+    "cpu": "0.5",
+    "memory": "512Mi"
+  },
+  "agent_tools": ["calculate_molecule_properties"]
+}

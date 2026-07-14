@@ -1,0 +1,15 @@
+{
+  "report_file": "report.html",
+  "format": "html",
+  "n_rows": 6,
+  "numeric_columns": [
+    "temperature",
+    "yield_pct",
+    "purity_pct"
+  ],
+  "plots": [
+    "plot_temperature.png",
+    "plot_yield_pct.png",
+    "plot_purity_pct.png"
+  ]
+}

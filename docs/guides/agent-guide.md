@@ -692,3 +692,5 @@ tool names are included in the agent definition's `tools` array.
 ## See Also
 
 - [Dataset Registration Guide](dataset-guide.md) — Registering and versioning datasets (ZINC20 example)
+- [Tool Registration Guide](tool-guide.md) — Registering computational tools (pypi and container)
+- [App Registration Guide](app-guide.md) — Building and deploying embedded apps

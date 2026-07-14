@@ -1,0 +1,146 @@
+{
+  "results": [
+    {
+      "id": "ibuprofen",
+      "smiles": "CC(C)Cc1ccc(cc1)C(C)C(=O)O",
+      "affinity": -4.407,
+      "num_poses": 9,
+      "pose_affinities": [
+        -4.407,
+        -4.291,
+        -4.245,
+        -4.18,
+        -4.087,
+        -4.074,
+        -3.961,
+        -3.957,
+        -3.826
+      ],
+      "pose_file": "ibuprofen_poses.sdf",
+      "rank": 1
+    },
+    {
+      "id": "paracetamol",
+      "smiles": "CC(=O)Nc1ccc(O)cc1",
+      "affinity": -3.991,
+      "num_poses": 9,
+      "pose_affinities": [
+        -3.991,
+        -3.963,
+        -3.895,
+        -3.734,
+        -3.698,
+        -3.631,
+        -3.605,
+        -3.563,
+        -3.544
+      ],
+      "pose_file": "paracetamol_poses.sdf",
+      "rank": 2
+    },
+    {
+      "id": "aspirin",
+      "smiles": "CC(=O)Oc1ccccc1C(=O)O",
+      "affinity": -3.851,
+      "num_poses": 9,
+      "pose_affinities": [
+        -3.851,
+        -3.797,
+        -3.774,
+        -3.772,
+        -3.756,
+        -3.7,
+        -3.697,
+        -3.61,
+        -3.528
+      ],
+      "pose_file": "aspirin_poses.sdf",
+      "rank": 3
+    },
+    {
+      "id": "salicylic-acid",
+      "smiles": "OC(=O)c1ccccc1O",
+      "affinity": -3.769,
+      "num_poses": 9,
+      "pose_affinities": [
+        -3.769,
+        -3.592,
+        -3.564,
+        -3.549,
+        -3.466,
+        -3.462,
+        -3.405,
+        -3.369,
+        -3.34
+      ],
+      "pose_file": "salicylic-acid_poses.sdf",
+      "rank": 4
+    },
+    {
+      "id": "caffeine",
+      "smiles": "CN1C=NC2=C1C(=O)N(C(=O)N2C)C",
+      "affinity": -3.765,
+      "num_poses": 9,
+      "pose_affinities": [
+        -3.765,
+        -3.694,
+        -3.661,
+        -3.614,
+        -3.594,
+        -3.573,
+        -3.532,
+        -3.517,
+        -3.497
+      ],
+      "pose_file": "caffeine_poses.sdf",
+      "rank": 5
+    }
+  ],
+  "ranking": [
+    "ibuprofen",
+    "paracetamol",
+    "aspirin",
+    "salicylic-acid",
+    "caffeine"
+  ],
+  "errors": [],
+  "summary": {
+    "total": 5,
+    "docked": 5,
+    "failed": 0,
+    "best_id": "ibuprofen",
+    "best_affinity": -4.407,
+    "box": {
+      "center": [
+        10.6,
+        10.2,
+        6.1
+      ],
+      "size": [
+        24.0,
+        24.0,
+        24.0
+      ]
+    },
+    "vina_version": "AutoDock Vina v1.2.7"
+  },
+  "count": 5,
+  "params_used": {
+    "center_x": 10.6,
+    "center_y": 10.2,
+    "center_z": 6.1,
+    "size_x": 24,
+    "size_y": 24,
+    "size_z": 24,
+    "exhaustiveness": 8,
+    "num_modes": 9,
+    "energy_range": 3.0,
+    "seed": 42,
+    "remove_waters": true,
+    "write_poses": true,
+    "render_scores": true
+  },
+  "images": {
+    "scores": "scores.png"
+  }
+}

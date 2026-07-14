@@ -594,3 +594,11 @@ modal. The Create Dataset form also includes a Data Schema textarea.
 - Platform admins can see and edit all datasets regardless of visibility settings
 - Org admins and project leads within the same org can edit dataset metadata
 - Public datasets appear in search results for all authenticated users
+
+---
+
+## See Also
+
+- [Tool Registration Guide](tool-guide.md) — Registering computational tools (pypi and container)
+- [Agent Building Guide](agent-guide.md) — Building and deploying AI agents
+- [App Registration Guide](app-guide.md) — Building and deploying embedded apps

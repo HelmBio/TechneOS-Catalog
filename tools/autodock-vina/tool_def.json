@@ -1,0 +1,155 @@
+{
+  "name": "AutoDock Vina",
+  "slug": "autodock-vina",
+  "description": "Docks a set of representative molecules (e.g. the keep-list that survived structure-alerts / compound-clustering triage) into a protein receptor with AutoDock Vina and ranks them by predicted binding affinity. Receptor PDB is prepped automatically (waters stripped, hydrogens + Gasteiger charges added, converted to a rigid PDBQT via OpenBabel); each ligand SMILES is embedded to 3D (RDKit ETKDG + MMFF) and prepared with Meeko. The search box is given explicitly (center + size in Angstrom) or derived from a reference ligand. Returns per-molecule best/per-pose affinities and an affinity ranking; optionally writes docked-pose SDFs and a score chart.",
+  "category": "docking",
+  "tool_type": "container",
+  "tags": [
+    "docking",
+    "molecular-docking",
+    "autodock-vina",
+    "vina",
+    "binding-affinity",
+    "structure-based",
+    "virtual-screening",
+    "rdkit",
+    "meeko",
+    "smiles"
+  ],
+  "is_public": true,
+  "input_schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "input_kind": "smiles_list",
+    "title": "autodock-vina inputs",
+    "description": "Ligands to dock plus the protein receptor. `compounds` is the list of representative molecules ({smiles, id}); the worker resolves an uploaded/pasted SMILES file to it. `receptor` is a protein structure file (PDB) which the worker hands the tool as `receptor_file`.",
+    "properties": {
+      "compounds": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "smiles": { "type": "string", "description": "SMILES string" },
+            "id": { "type": "string", "description": "Unique identifier for the compound" }
+          },
+          "required": ["smiles", "id"]
+        },
+        "description": "List of {smiles, id} ligand objects; both fields required, ids unique",
+        "x-unique-keys": ["id"]
+      },
+      "receptor": {
+        "type": "string",
+        "description": "Protein receptor structure file (PDB). Uploaded/selected by the user; the worker hands the tool the resolved path as `receptor_file`."
+      }
+    },
+    "required": ["compounds", "receptor"],
+    "example": {
+      "compounds": [
+        {"smiles": "CC(=O)Oc1ccccc1C(=O)O", "id": "aspirin"},
+        {"smiles": "CC(C)Cc1ccc(cc1)C(C)C(=O)O", "id": "ibuprofen"}
+      ],
+      "receptor": "receptor.pdb"
+    }
+  },
+  "output_schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "title": "autodock-vina result",
+    "description": "Dict returned by run(...) and written to /work/output/result.json. Pose SDFs and scores.png (when requested) are written under /work/output/ as well.",
+    "properties": {
+      "results": {
+        "type": "array",
+        "description": "Per-molecule docking results, ranked best-first",
+        "items": {
+          "type": "object",
+          "required": ["id", "smiles", "affinity", "rank", "num_poses"],
+          "properties": {
+            "id": { "type": "string" },
+            "smiles": { "type": "string" },
+            "affinity": { "type": "number", "description": "Best (most negative) predicted binding affinity, kcal/mol" },
+            "rank": { "type": "integer", "description": "1-based rank by best affinity (1 = strongest binder)" },
+            "num_poses": { "type": "integer" },
+            "pose_affinities": { "type": "array", "items": { "type": "number" }, "description": "Affinity of every returned pose, kcal/mol" },
+            "pose_file": { "type": "string", "description": "Filename of the docked-pose SDF under output/ (only when write_poses=true)" }
+          }
+        }
+      },
+      "ranking": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Compound ids ordered by best affinity, strongest binder first"
+      },
+      "errors": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string" },
+            "smiles": { "type": "string" },
+            "reason": { "type": "string" }
+          }
+        },
+        "description": "Compounds that could not be prepared or docked, with the reason"
+      },
+      "summary": {
+        "type": "object",
+        "properties": {
+          "total": { "type": "integer" },
+          "docked": { "type": "integer" },
+          "failed": { "type": "integer" },
+          "best_id": { "type": ["string", "null"] },
+          "best_affinity": { "type": ["number", "null"] },
+          "box": { "type": "object", "description": "Resolved search box {center:[x,y,z], size:[x,y,z]}" },
+          "vina_version": { "type": "string" }
+        }
+      },
+      "count": { "type": "integer", "description": "Number of molecules successfully docked" },
+      "params_used": { "type": "object" },
+      "images": {
+        "type": "object",
+        "description": "Present only when render_scores was requested. Maps 'scores' to scores.png, or 'scores_error' to the reason a render was skipped.",
+        "properties": {
+          "scores": { "type": "string" }
+        }
+      }
+    },
+    "required": ["results", "ranking", "errors", "summary", "count", "params_used"]
+  },
+  "parameters_schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "title": "autodock-vina parameters",
+    "properties": {
+      "search_box": {
+        "type": "object",
+        "description": "Docking search box. Leave it unset to dock a default-size box centred on the receptor; set center_x/y/z to target a known pocket, or box_from_ref to derive the box from a reference ligand.",
+        "properties": {
+          "center_x": { "type": "number", "description": "Box center X (Angstrom). Defaults to the receptor centroid." },
+          "center_y": { "type": "number", "description": "Box center Y (Angstrom). Defaults to the receptor centroid." },
+          "center_z": { "type": "number", "description": "Box center Z (Angstrom). Defaults to the receptor centroid." },
+          "size_x": { "type": "number", "minimum": 1, "default": 20, "description": "Box size along X (Angstrom)." },
+          "size_y": { "type": "number", "minimum": 1, "default": 20, "description": "Box size along Y (Angstrom)." },
+          "size_z": { "type": "number", "minimum": 1, "default": 20, "description": "Box size along Z (Angstrom)." },
+          "box_from_ref": { "type": "boolean", "default": false, "description": "Derive the box center/size from a reference ligand's bounding box instead of center/size." },
+          "reference_ligand": { "type": "string", "description": "Path to a reference ligand structure (PDB/PDBQT) used when box_from_ref is set." },
+          "ref_padding": { "type": "number", "default": 4.0, "description": "Padding (Angstrom) added around the reference ligand bounding box." }
+        },
+        "additionalProperties": false
+      },
+      "exhaustiveness": { "type": "integer", "minimum": 1, "default": 8, "description": "Vina search effort. Higher is more thorough but slower (8 default; 16-32 for production)." },
+      "num_modes": { "type": "integer", "minimum": 1, "default": 9, "description": "Maximum number of binding poses to return per ligand." },
+      "energy_range": { "type": "number", "minimum": 0, "default": 3.0, "description": "Max energy difference (kcal/mol) between the best and worst returned pose." },
+      "seed": { "type": "integer", "default": 0, "description": "Random seed for reproducible runs." },
+      "ph": { "type": "number", "default": 7.4, "description": "pH for hydrogen addition during ligand & receptor prep." },
+      "remove_waters": { "type": "boolean", "default": true, "description": "Strip crystallographic waters from the receptor before docking." },
+      "remove_hetero": { "type": "boolean", "default": false, "description": "Strip all heteroatoms (cofactors, ions, ligands) from the receptor, not just waters." },
+      "write_poses": { "type": "boolean", "default": false, "description": "Write each ligand's docked poses to an SDF artifact under output/." },
+      "render_scores": { "type": "boolean", "default": false, "description": "Render a horizontal bar chart of best affinity per molecule to scores.png." }
+    },
+    "additionalProperties": false
+  },
+  "resource_requirements": {
+    "cpu": "2",
+    "memory": "2Gi"
+  }
+}

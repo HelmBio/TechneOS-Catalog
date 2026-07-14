@@ -1,0 +1,7 @@
+sample_id	temperature	yield_pct	purity_pct	passed_qc
+S-001	25.0	82.5	98.2	True
+S-002	30.0	76.1	95.4	True
+S-003	35.0	68.9	91.0	False
+S-004	40.0	60.3	88.7	False
+S-005	25.0	85.2	99.1	True
+S-006	30.0	79.4	96.8	True
