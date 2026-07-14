@@ -1,0 +1,15 @@
+{
+  "name": "Structure Viewer",
+  "slug": "structure-viewer",
+  "description": "View and edit 2D chemical structures (powered by Ketcher).",
+  "category": "editor",
+  "tags": ["chemistry", "molecule", "editor"],
+  "icon_url": "/api/v1/apps/runtime/structure-viewer/icon.svg",
+  "launch_mode": "embedded",
+  "container_port": 3000,
+  "health_check_path": "/healthz",
+  "embed_sandbox": "allow-scripts allow-same-origin allow-forms allow-downloads",
+  "embed_allow": "clipboard-read; clipboard-write",
+  "auth_mode": "none",
+  "is_public": true
+}
