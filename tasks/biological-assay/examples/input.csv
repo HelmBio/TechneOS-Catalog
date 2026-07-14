@@ -1,0 +1,6 @@
+compound_id,smiles,mw,notes
+HIT-001,CC1=CC=C(C=C1)C2=CC(=NN2C3=CC=C(C=C3)F)C#N,316.33,"Primary hit from HTS campaign, IC50 2.1 uM"
+HIT-002,CCOC(=O)C1=C(C)NC(C)=C(C1C2=CC=CC=C2)C#N,331.39,"Promising scaffold, needs counterscreening"
+HIT-003,O=C(NC1=CC=C(C=C1)C2=CC=CC=C2)C3=CC=CN=C3,289.33,"Fluorescence interference suspected"
+HIT-004,CC(C)(C)NC(=O)C1=CC2=C(C=C1)N=CN2C3=CC=CC=C3,375.47,"Novel scaffold, full profiling required"
+HIT-005,CN1CCN(CC1)C2=C3C=CC(=O)C=C3OC4=C2C=CC(=C4)O,410.46,"Known hERG liability, include counterscreen"

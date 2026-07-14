@@ -1,0 +1,225 @@
+{
+  "name": "Synthesis Request",
+  "slug": "synthesis-request",
+  "description": "Request synthesis of target compounds. Accepts an SDF file with compound IDs and structures to be made, and upon completion delivers a Certificate of Analysis (CoA) for each compound covering identity (NMR, MS), purity (HPLC), and analytical results.",
+  "category": "general",
+  "tool_type": "human",
+  "tags": [
+    "synthesis",
+    "chemistry",
+    "medicinal-chemistry",
+    "human-task"
+  ],
+  "is_public": true,
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "compounds": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "required": true,
+              "description": "Compound identifier taken from SD tag"
+            },
+            "smiles": {
+              "type": "string",
+              "required": true,
+              "description": "SMILES string from structure"
+            },
+            "mw": {
+              "type": "number",
+              "description": "Molecular weight"
+            },
+            "desired_amount": {
+              "type": "string",
+              "description": "Desired quantity (e.g. 100mg, 1g)"
+            },
+            "notes": {
+              "type": "string",
+              "description": "Per-compound synthesis notes"
+            }
+          }
+        },
+        "description": "List of compounds extracted from the SDF file"
+      }
+    }
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "compound_details": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "compound_id": {
+              "type": "string",
+              "description": "Compound identifier"
+            },
+            "requested_amount": {
+              "type": "string",
+              "description": "Amount originally requested"
+            },
+            "delivered_amount": {
+              "type": "string",
+              "description": "Final delivered amount and form (e.g. 85mg, white solid)"
+            },
+            "purity": {
+              "type": "string",
+              "description": "HPLC purity (e.g. 98.2%)"
+            },
+            "purity_method": {
+              "type": "string",
+              "description": "Purity determination method (HPLC, qNMR, LCMS)"
+            },
+            "identity_confirmed": {
+              "type": "boolean",
+              "description": "Was the structure confirmed?"
+            },
+            "identity_methods": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Methods used for identity confirmation (e.g. 1H-NMR, 13C-NMR, HRMS)"
+            },
+            "analytical_results": {
+              "type": "object",
+              "properties": {
+                "ee": {
+                  "type": "string",
+                  "description": "Enantiomeric excess if chiral"
+                },
+                "melting_point": {
+                  "type": "string",
+                  "description": "Melting point range"
+                },
+                "solubility": {
+                  "type": "string",
+                  "description": "Aqueous solubility observation"
+                }
+              },
+              "description": "Additional assay results"
+            },
+            "storage_conditions": {
+              "type": "string",
+              "description": "Recommended storage (e.g. -20°C, desiccated)"
+            },
+            "batch_number": {
+              "type": "string",
+              "description": "Internal batch/lot number"
+            },
+            "certificate_pdf": {
+              "type": "string",
+              "description": "URL or path to the signed CoA PDF"
+            },
+            "notes": {
+              "type": "string",
+              "description": "Synthesis notes and observations"
+            }
+          },
+          "required": [
+            "compound_id",
+            "delivered_amount",
+            "purity",
+            "identity_confirmed"
+          ]
+        },
+        "description": "details for each requested compound"
+      },
+      "overall_status": {
+        "type": "string",
+        "enum": [
+          "completed",
+          "partial",
+          "failed"
+        ],
+        "description": "Overall synthesis campaign outcome"
+      },
+      "completion_date": {
+        "type": "string",
+        "description": "Date all synthesis work was completed"
+      },
+      "summary": {
+        "type": "string",
+        "description": "Overall synthesis campaign narrative"
+      }
+    }
+  },
+  "parameters_schema": {
+    "type": "object",
+    "properties": {
+      "input_file_format": {
+        "enum": [
+          "sdf",
+          "csv",
+          "json",
+          "tsv"
+        ],
+        "type": "string",
+        "title": "Input Data File Format",
+        "default": "csv",
+        "required": true,
+        "description": "The expected input data file format for the list of compounds to synthesize"
+      },
+      "output_file_format": {
+        "enum": [
+          "sdf",
+          "json",
+          "xlsx"
+        ],
+        "type": "string",
+        "title": "Output Data File Format",
+        "default": "json",
+        "required": true,
+        "description": "The expected output data file format for the compounds synthesized and their analytical data"
+      },
+
+      "project_details": {
+        "type": "object",
+        "title": "Project Details",
+        "description": "Contextual information about the project for synthesis",
+        "properties": {
+          "project_name": {
+            "type": "string",
+            "title": "Project Name",
+            "description": "Name of the project this synthesis is for"
+          },
+          "project_rationale": {
+            "type": "string",
+            "title": "Project Rationale",
+            "format": "long",
+            "description": "Why these compounds are needed (e.g. SAR follow-up, in vivo study)"
+          },
+          "analysis_required": {
+            "type": "array",
+            "title": "Required Analytical Techniques",
+            "required": true,
+            "items": {
+              "enum": [
+                "hplc",
+                "lcms",
+                "nmr"
+              ],
+              "type": "string"
+            },
+            "default": [
+              "lcms",
+              "nmr"
+            ],
+            "description": "Required analytical techniques for the synthesized compounds with file attachments"
+          }
+        }
+      }
+    }
+  },
+  "human_config": {
+    "assignment_type": "team",
+    "due_in_hours": 168,
+    "require_attachments": true,
+    "priority": "medium"
+  }
+}

@@ -602,3 +602,4 @@ modal. The Create Dataset form also includes a Data Schema textarea.
 - [Tool Registration Guide](tool-guide.md) — Registering computational tools (pypi and container)
 - [Agent Building Guide](agent-guide.md) — Building and deploying AI agents
 - [App Registration Guide](app-guide.md) — Building and deploying embedded apps
+- [Task Guide](task-guide.md) — Authoring and registering human tasks (offline work for a person or team)

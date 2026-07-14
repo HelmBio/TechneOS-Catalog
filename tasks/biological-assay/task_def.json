@@ -1,0 +1,267 @@
+{
+  "name": "Biological Assay Request",
+  "slug": "biological-assay",
+  "description": "Request biological assay profiling of hit compounds. Submit compounds for one or more assay protocols including dose-response confirmation, counterscreening, biophysical binding, cellular activity, early ADME profiling, and selectivity panels. Upon completion delivers dose-response curves, IC50/EC50 values, plate quality metrics, and assay reports.",
+  "category": "general",
+  "tool_type": "human",
+  "tags": [
+    "biological-assay",
+    "biology",
+    "screening",
+    "hit-validation",
+    "human-task"
+  ],
+  "is_public": true,
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "compounds": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "compound_id": {
+              "type": "string",
+              "required": true,
+              "description": "Compound identifier"
+            },
+            "smiles": {
+              "type": "string",
+              "required": true,
+              "description": "SMILES string"
+            },
+            "mw": {
+              "type": "number",
+              "description": "Molecular weight"
+            },
+            "notes": {
+              "type": "string",
+              "description": "Per-compound notes for the assay team"
+            }
+          }
+        },
+        "description": "List of compounds to be assayed"
+      }
+    }
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "results": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "compound_id": {
+              "type": "string",
+              "description": "Compound identifier"
+            },
+            "assay_type": {
+              "type": "string",
+              "description": "The assay protocol this result is for"
+            },
+            "ic50": {
+              "type": "number",
+              "description": "IC50 value in µM"
+            },
+            "ec50": {
+              "type": "number",
+              "description": "EC50 value in µM (for agonist assays)"
+            },
+            "max_inhibition": {
+              "type": "number",
+              "description": "Maximum percent inhibition observed"
+            },
+            "hill_slope": {
+              "type": "number",
+              "description": "Hill slope of the dose-response curve"
+            },
+            "r_squared": {
+              "type": "number",
+              "description": "Goodness of fit for the dose-response curve"
+            },
+            "quality": {
+              "type": "string",
+              "enum": [
+                "pass",
+                "warn",
+                "fail"
+              ],
+              "description": "QC flag for this result"
+            },
+            "curve_data": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "conc_um": {
+                    "type": "number",
+                    "description": "Concentration in µM"
+                  },
+                  "response": {
+                    "type": "number",
+                    "description": "Assay response at this concentration"
+                  }
+                }
+              },
+              "description": "Raw dose-response data points"
+            },
+            "notes": {
+              "type": "string",
+              "description": "Assay technician notes and observations"
+            }
+          },
+          "required": [
+            "compound_id"
+          ]
+        },
+        "description": "Per-compound assay results"
+      },
+      "plate_quality_metrics": {
+        "type": "object",
+        "properties": {
+          "z_prime_factor": {
+            "type": "number",
+            "description": "Z'-factor plate quality metric"
+          },
+          "signal_to_background": {
+            "type": "number",
+            "description": "Signal-to-background ratio"
+          },
+          "signal_to_noise": {
+            "type": "number",
+            "description": "Signal-to-noise ratio"
+          }
+        },
+        "description": "Plate-level quality control metrics"
+      },
+      "overall_status": {
+        "type": "string",
+        "enum": [
+          "completed",
+          "partial",
+          "failed"
+        ],
+        "description": "Overall assay campaign outcome"
+      },
+      "completion_date": {
+        "type": "string",
+        "description": "Date all assay work was completed"
+      },
+      "summary": {
+        "type": "string",
+        "description": "Overall assay campaign narrative"
+      }
+    }
+  },
+  "parameters_schema": {
+    "type": "object",
+    "properties": {
+      "input_file_format": {
+        "enum": [
+          "csv",
+          "json",
+          "tsv"
+        ],
+        "type": "string",
+        "title": "Input Data File Format",
+        "default": "csv",
+        "required": true,
+        "description": "Format of the compound list file"
+      },
+      "output_file_format": {
+        "enum": [
+          "json",
+          "xlsx"
+        ],
+        "type": "string",
+        "title": "Output Data File Format",
+        "default": "json",
+        "required": true,
+        "description": "Format of the assay results file"
+      },
+      "assays": {
+        "type": "array",
+        "title": "Assays to Perform",
+        "description": "Select one or more assay protocols for this run",
+        "items": {
+          "type": "object",
+          "properties": {
+            "protocol": {
+              "enum": [
+                "dose-response",
+                "tr-fret-counterscreen",
+                "alphascreen-counterscreen",
+                "fluorescence-counterscreen",
+                "luciferase-counterscreen",
+                "spr-binding",
+                "mst-binding",
+                "itc-binding",
+                "nmr-fragment-screening",
+                "cellular-activity",
+                "cell-viability",
+                "reporter-gene",
+                "cellular-target-engagement",
+                "kinetic-solubility",
+                "microsomal-stability",
+                "plasma-protein-binding",
+                "permeability",
+                "cyp-inhibition",
+                "herg-binding",
+                "selectivity-panel"
+              ],
+              "type": "string",
+              "title": "Protocol",
+              "description": "Select an assay protocol"
+            },
+            "target_or_cell_line": {
+              "type": "string",
+              "title": "Target / Cell Line",
+              "description": "e.g. EGFR kinase domain, HepG2 cells"
+            },
+            "max_conc_um": {
+              "type": "number",
+              "title": "Top Concentration (µM)",
+              "default": 10,
+              "description": "Highest concentration to test"
+            },
+            "notes": {
+              "type": "string",
+              "title": "Notes",
+              "description": "Protocol-specific instructions"
+            }
+          }
+        }
+      },
+      "plate_format": {
+        "enum": [
+          "96",
+          "384",
+          "1536"
+        ],
+        "type": "string",
+        "title": "Plate Format",
+        "default": "384",
+        "description": "Assay plate format"
+      },
+      "replicates": {
+        "type": "integer",
+        "title": "Replicates",
+        "default": 2,
+        "description": "Number of replicates per compound"
+      },
+      "notes": {
+        "type": "string",
+        "title": "Notes",
+        "format": "long",
+        "description": "Project context, rationale, or any additional instructions"
+      }
+    }
+  },
+  "human_config": {
+    "assignment_type": "team",
+    "due_in_hours": 120,
+    "require_attachments": true,
+    "priority": "medium"
+  }
+}

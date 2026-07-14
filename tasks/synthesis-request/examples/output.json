@@ -1,0 +1,42 @@
+{
+  "compound_details": [
+    {
+      "compound_id": "DD-2026-001",
+      "requested_amount": "500mg",
+      "delivered_amount": "470mg, white crystalline solid",
+      "purity": "98.7%",
+      "purity_method": "HPLC (254 nm, area%)",
+      "identity_confirmed": true,
+      "identity_methods": ["1H-NMR (400 MHz, CDCl3)", "13C-NMR (101 MHz, CDCl3)", "HRMS (ESI+)"],
+      "analytical_results": {
+        "ee": ">99% (Chiral HPLC, Chiralpak AD-H, 95:5 hexane/IPA)",
+        "melting_point": "198-201°C (dec.)",
+        "solubility": "Freely soluble in DMSO, EtOAc; sparingly soluble in H2O (0.1 mg/mL)"
+      },
+      "storage_conditions": "-20°C, desiccated, protected from light",
+      "batch_number": "SYN-2026-0042-A",
+      "certificate_pdf": "https://storage.internal/coa/SYN-2026-0042-A/DD-2026-001_coa.pdf",
+      "notes": "Synthesized via Suzuki coupling followed by acidic deprotection. Yield: 74% over 3 steps. NMR consistent with assigned structure. Single enantiomer confirmed by chiral HPLC."
+    },
+    {
+      "compound_id": "DD-2026-002",
+      "requested_amount": "200mg",
+      "delivered_amount": "185mg, pale yellow solid",
+      "purity": "96.3%",
+      "purity_method": "HPLC (220 nm, area%); 97.1% by qNMR (maleic acid internal standard)",
+      "identity_confirmed": true,
+      "identity_methods": ["1H-NMR (600 MHz, DMSO-d6)", "13C-NMR (151 MHz, DMSO-d6)", "HSQC", "HMBC", "HRMS (ESI+)"],
+      "analytical_results": {
+        "melting_point": ">250°C (dec.)",
+        "solubility": "Soluble in DMSO (10 mg/mL), partially soluble in MeOH (2 mg/mL)"
+      },
+      "storage_conditions": "-20°C, desiccated",
+      "batch_number": "SYN-2026-0042-B",
+      "certificate_pdf": "https://storage.internal/coa/SYN-2026-0042-B/DD-2026-002_coa.pdf",
+      "notes": "Novel heterocyclic scaffold assembled via 4-step sequence (Buchwald-Hartwig, Sandmeyer, cyclization, deprotection). Structure unambiguously confirmed by 2D NMR (HSQC, HMBC). Residual starting material (<2%) observed by HPLC. Batch repurified by prep-HPLC to >98% for in vivo studies."
+    }
+  ],
+  "overall_status": "completed",
+  "completion_date": "2026-05-28",
+  "summary": "Both targets successfully synthesized and fully characterized. DD-2026-001 was straightforward (74% yield, 98.7% purity). DD-2026-002 required route scouting (3 approaches evaluated) before the 4-step sequence succeeded; final purity after prep-HPLC is suitable for in vivo studies. CoA PDFs have been generated, signed, and uploaded to internal storage."
+}

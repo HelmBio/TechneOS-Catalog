@@ -1,0 +1,43 @@
+{
+  "assays": [
+    {
+      "protocol": "dose-response",
+      "target_or_cell_line": "EGFR kinase domain",
+      "max_conc_um": 100,
+      "notes": "10-point 3-fold dilution series, duplicate wells"
+    },
+    {
+      "protocol": "fluorescence-counterscreen",
+      "target_or_cell_line": "EGFR kinase domain",
+      "max_conc_um": 100,
+      "notes": "Test at assay wavelengths (ex 340 / em 520) to rule out fluorescence artifacts"
+    },
+    {
+      "protocol": "tr-fret-counterscreen",
+      "target_or_cell_line": "EGFR kinase domain",
+      "max_conc_um": 10,
+      "notes": "LANCE Ultra TR-FRET format"
+    },
+    {
+      "protocol": "selectivity-panel",
+      "target_or_cell_line": "5-kinase panel (EGFR, HER2, MET, AXL, VEGFR2)",
+      "max_conc_um": 10,
+      "notes": "Single-point at 1 uM, full dose-response if >50% inhibition"
+    },
+    {
+      "protocol": "herg-binding",
+      "target_or_cell_line": "hERG (CHO cell membrane preparation)",
+      "max_conc_um": 30,
+      "notes": "Predictor hERG fluorescence polarization assay"
+    },
+    {
+      "protocol": "microsomal-stability",
+      "target_or_cell_line": "Human liver microsomes (pooled, 50 donors)",
+      "max_conc_um": 1,
+      "notes": "1 uM substrate, NADPH-regenerating system, 0 min / 5 min / 15 min / 30 min / 45 min timepoints. LC-MS/MS analysis."
+    }
+  ],
+  "plate_format": "384",
+  "replicates": 2,
+  "notes": "EGFR Hit Validation campaign. Hit validation panel for 5 primary HTS hits from EGFR kinase domain screening. Goal: confirm dose-response activity, identify fluorescence artifacts, assess selectivity and early ADME liability."
+}

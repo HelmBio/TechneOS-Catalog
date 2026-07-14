@@ -1,0 +1,162 @@
+{
+  "results": [
+    {
+      "compound_id": "HIT-001",
+      "assay_type": "dose-response",
+      "ic50": 1.85,
+      "max_inhibition": 98.2,
+      "hill_slope": 1.12,
+      "r_squared": 0.994,
+      "quality": "pass",
+      "curve_data": [
+        {"conc_um": 0.0001, "response": 2.1},
+        {"conc_um": 0.001, "response": 3.5},
+        {"conc_um": 0.01, "response": 8.2},
+        {"conc_um": 0.1, "response": 22.4},
+        {"conc_um": 1.0, "response": 48.7},
+        {"conc_um": 10.0, "response": 82.3},
+        {"conc_um": 100.0, "response": 96.8}
+      ],
+      "notes": "Clean dose-response. IC50 reproducible across two independent experiments."
+    },
+    {
+      "compound_id": "HIT-002",
+      "assay_type": "dose-response",
+      "ic50": 5.42,
+      "max_inhibition": 91.5,
+      "hill_slope": 0.89,
+      "r_squared": 0.981,
+      "quality": "pass",
+      "curve_data": [
+        {"conc_um": 0.0001, "response": 1.8},
+        {"conc_um": 0.001, "response": 2.9},
+        {"conc_um": 0.01, "response": 6.7},
+        {"conc_um": 0.1, "response": 15.3},
+        {"conc_um": 1.0, "response": 35.8},
+        {"conc_um": 10.0, "response": 68.4},
+        {"conc_um": 100.0, "response": 90.1}
+      ],
+      "notes": "Partial loss of activity at high concentrations possible precipitation."
+    },
+    {
+      "compound_id": "HIT-003",
+      "assay_type": "dose-response",
+      "ic50": 12.8,
+      "max_inhibition": 45.3,
+      "hill_slope": 0.62,
+      "r_squared": 0.823,
+      "quality": "warn",
+      "curve_data": [
+        {"conc_um": 0.0001, "response": 4.2},
+        {"conc_um": 0.001, "response": 5.1},
+        {"conc_um": 0.01, "response": 7.8},
+        {"conc_um": 0.1, "response": 12.4},
+        {"conc_um": 1.0, "response": 20.6},
+        {"conc_um": 10.0, "response": 35.2},
+        {"conc_um": 100.0, "response": 44.1}
+      ],
+      "notes": "Partial curve, max inhibition <50%. Confirmed as artifact in fluorescence counterscreen. Likely false positive."
+    },
+    {
+      "compound_id": "HIT-003",
+      "assay_type": "fluorescence-counterscreen",
+      "ic50": null,
+      "max_inhibition": 78.5,
+      "hill_slope": null,
+      "r_squared": null,
+      "quality": "fail",
+      "curve_data": [],
+      "notes": "Strong fluorescence at assay wavelengths. Compound emits at 520nm (ex 340nm) — confirmed as fluorescence artifact. No further profiling recommended."
+    },
+    {
+      "compound_id": "HIT-004",
+      "assay_type": "dose-response",
+      "ic50": 0.42,
+      "max_inhibition": 99.1,
+      "hill_slope": 1.05,
+      "r_squared": 0.997,
+      "quality": "pass",
+      "curve_data": [
+        {"conc_um": 0.0001, "response": 1.5},
+        {"conc_um": 0.001, "response": 4.8},
+        {"conc_um": 0.01, "response": 15.2},
+        {"conc_um": 0.1, "response": 38.6},
+        {"conc_um": 1.0, "response": 72.4},
+        {"conc_um": 10.0, "response": 95.7},
+        {"conc_um": 100.0, "response": 99.0}
+      ],
+      "notes": "Potent sub-micromolar hit. Clean counterscreen profile. Recommended for selectivity panel."
+    },
+    {
+      "compound_id": "HIT-004",
+      "assay_type": "tr-fret-counterscreen",
+      "ic50": null,
+      "max_inhibition": 4.2,
+      "hill_slope": null,
+      "r_squared": null,
+      "quality": "pass",
+      "curve_data": [],
+      "notes": "No TR-FRET interference. True binding signal confirmed."
+    },
+    {
+      "compound_id": "HIT-004",
+      "assay_type": "selectivity-panel",
+      "ic50": null,
+      "max_inhibition": null,
+      "hill_slope": null,
+      "r_squared": null,
+      "quality": "pass",
+      "curve_data": [],
+      "notes": "Selectivity panel: >50-fold selective over 5 off-target kinases tested. Acceptable profile."
+    },
+    {
+      "compound_id": "HIT-005",
+      "assay_type": "dose-response",
+      "ic50": 3.15,
+      "max_inhibition": 87.4,
+      "hill_slope": 0.95,
+      "r_squared": 0.989,
+      "quality": "pass",
+      "curve_data": [
+        {"conc_um": 0.0001, "response": 1.2},
+        {"conc_um": 0.001, "response": 3.1},
+        {"conc_um": 0.01, "response": 8.9},
+        {"conc_um": 0.1, "response": 21.5},
+        {"conc_um": 1.0, "response": 45.2},
+        {"conc_um": 10.0, "response": 72.8},
+        {"conc_um": 100.0, "response": 86.3}
+      ],
+      "notes": "Good activity. hERG counterscreen flagged as borderline — see separate result."
+    },
+    {
+      "compound_id": "HIT-005",
+      "assay_type": "herg-binding",
+      "ic50": 2.8,
+      "max_inhibition": 82.1,
+      "hill_slope": 0.88,
+      "r_squared": 0.965,
+      "quality": "warn",
+      "curve_data": [],
+      "notes": "hERG IC50 2.8 uM. Therapeutic index ~1x. Requires medicinal chemistry optimization for hERG selectivity. Recommend structural modifications to reduce lipophilicity."
+    },
+    {
+      "compound_id": "HIT-005",
+      "assay_type": "microsomal-stability",
+      "ic50": null,
+      "max_inhibition": null,
+      "hill_slope": null,
+      "r_squared": null,
+      "quality": "pass",
+      "curve_data": [],
+      "notes": "t1/2 = 45 min (human liver microsomes), intrinsic clearance = 15 uL/min/mg. Moderate stability — acceptable for tool compound."
+    }
+  ],
+  "plate_quality_metrics": {
+    "z_prime_factor": 0.72,
+    "signal_to_background": 12.5,
+    "signal_to_noise": 28.3
+  },
+  "overall_status": "completed",
+  "completion_date": "2026-06-05",
+  "summary": "Hit validation panel completed. HIT-001 and HIT-002 confirmed with clean dose-response profiles. HIT-003 identified as a fluorescence artifact (failed counterscreen) — disqualified from further profiling. HIT-004 is the most promising hit: sub-micromolar activity (IC50 0.42 uM), no counterscreen interference, >50-fold selectivity over off-targets. HIT-005 has good activity but significant hERG liability (IC50 2.8 uM) and moderate metabolic stability — recommended for chemistry optimization to improve therapeutic index. Three compounds (HIT-001, HIT-002, HIT-004) progressed to selectivity panel."
+}
