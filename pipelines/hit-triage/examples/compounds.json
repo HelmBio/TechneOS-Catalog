@@ -1,0 +1,19 @@
+[
+  { "smiles": "CN(C)C(=N)N=C(N)N", "id": "metformin" },
+  { "smiles": "CC(=O)Oc1ccccc1C(=O)O", "id": "aspirin" },
+  { "smiles": "CC(C)Cc1ccc(cc1)C(C)C(=O)O", "id": "ibuprofen" },
+  { "smiles": "COc1ccc2cc(ccc2c1)C(C)C(=O)O", "id": "naproxen" },
+  { "smiles": "CC(=O)Nc1ccc(O)cc1", "id": "acetaminophen" },
+  { "smiles": "CN1C=NC2=C1C(=O)N(C(=O)N2C)C", "id": "caffeine" },
+  { "smiles": "O=C(O)Cc1ccccc1Nc1c(Cl)cccc1Cl", "id": "diclofenac" },
+  { "smiles": "CC(C(=O)O)c1cccc(c1)C(=O)c1ccccc1", "id": "ketoprofen" },
+  { "smiles": "CC(C)(C)NCC(O)c1ccc(O)c(CO)c1", "id": "salbutamol" },
+  { "smiles": "CC(C)NCC(O)COc1cccc2ccccc12", "id": "propranolol" },
+  { "smiles": "CN1CCCC1c1cccnc1", "id": "nicotine" },
+  { "smiles": "OCC1OC(O)C(O)C(O)C1O", "id": "glucose" },
+  { "smiles": "Oc1ccccc1O", "id": "catechol-pains" },
+  { "smiles": "O=C1C=CC(=O)C=C1", "id": "benzoquinone-pains" },
+  { "smiles": "CC(=O)Cl", "id": "acetyl-chloride-reactive" },
+  { "smiles": "C=CC(=O)C", "id": "methyl-vinyl-ketone-michael" },
+  { "smiles": "not_a_smiles", "id": "invalid-1" }
+]

@@ -695,3 +695,4 @@ tool names are included in the agent definition's `tools` array.
 - [Tool Registration Guide](tool-guide.md) — Registering computational tools (pypi and container)
 - [App Registration Guide](app-guide.md) — Building and deploying embedded apps
 - [Task Guide](task-guide.md) — Authoring and registering human tasks (offline work for a person or team)
+- [Pipeline Building Guide](pipeline-guide.md) — Chaining tools into DAG workflows (hit-triage example)

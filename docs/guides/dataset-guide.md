@@ -16,7 +16,7 @@ discovering datasets on the TechneOS platform. It uses
 6. [Using Datasets in Pipelines](#using-datasets-in-pipelines)
 7. [Using Datasets in Agents](#using-datasets-in-agents)
 8. [Web Portal Walkthrough](#web-portal-walkthrough)
-9. [ZINC20 Example — Full Walkthrough](#zinc20-example--full-walkthrough)
+9. [ZINC20 — Full Walkthrough](#zinc20--full-walkthrough)
 10. [Best Practices](#best-practices)
 
 ---
@@ -603,3 +603,4 @@ modal. The Create Dataset form also includes a Data Schema textarea.
 - [Agent Building Guide](agent-guide.md) — Building and deploying AI agents
 - [App Registration Guide](app-guide.md) — Building and deploying embedded apps
 - [Task Guide](task-guide.md) — Authoring and registering human tasks (offline work for a person or team)
+- [Pipeline Building Guide](pipeline-guide.md) — Chaining tools into DAG workflows (hit-triage example)

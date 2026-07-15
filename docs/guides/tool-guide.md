@@ -1167,3 +1167,4 @@ entry point with the staged inputs and validated parameters.
 - [Agent Building Guide](agent-guide.md) — Building and deploying AI agents
 - [App Registration Guide](app-guide.md) — Building and deploying embedded apps
 - [Task Guide](task-guide.md) — Authoring and registering human tasks (offline work for a person or team)
+- [Pipeline Building Guide](pipeline-guide.md) — Chaining tools into DAG workflows (hit-triage example)

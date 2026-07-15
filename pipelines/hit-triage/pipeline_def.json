@@ -1,0 +1,96 @@
+{
+  "name": "Hit Triage",
+  "slug": "hit-triage",
+  "description": "Three-stage hit-triage workflow for an HTS / virtual-screening campaign. (1) structure-alerts screens the input compounds for PAINS and reactive groups and keeps the clean ones; (2) compound-clustering groups the survivors into chemical families and picks a representative per family; (3) autodock-vina docks the representatives into the supplied protein receptor and ranks them by predicted binding affinity. Chains three existing catalog tools into the platform's first end-to-end pipeline.",
+  "tags": ["virtual-screening", "hit-triage", "docking", "cheminformatics", "compound-triage"],
+  "is_public": true,
+  "steps": [
+    {
+      "name": "screen_alerts",
+      "tool_slug": "structure-alerts",
+      "tool_version": null,
+      "parameters": {
+        "filter_catalogs": ["PAINS", "BRENK"],
+        "reactive_smarts": true,
+        "include_passing": true
+      },
+      "depends_on": []
+    },
+    {
+      "name": "cluster_compounds",
+      "tool_slug": "compound-clustering",
+      "tool_version": null,
+      "parameters": {
+        "method": "butina",
+        "fingerprint": "morgan",
+        "cutoff": 0.35
+      },
+      "depends_on": ["screen_alerts"],
+      "inputs": {
+        "compounds": {
+          "from_step": "screen_alerts",
+          "path": "results",
+          "filter": { "passed": true }
+        }
+      }
+    },
+    {
+      "name": "dock_vina",
+      "tool_slug": "autodock-vina",
+      "tool_version": null,
+      "parameters": {
+        "exhaustiveness": 8,
+        "num_modes": 9,
+        "render_scores": true
+      },
+      "depends_on": ["cluster_compounds"],
+      "inputs": {
+        "compounds": {
+          "from_step": "cluster_compounds",
+          "path": "results",
+          "filter": { "is_representative": true }
+        }
+      }
+    }
+  ],
+  "edges": [
+    { "from_step": "screen_alerts", "to_step": "cluster_compounds" },
+    { "from_step": "cluster_compounds", "to_step": "dock_vina" }
+  ],
+  "parameters_schema": {
+    "type": "object",
+    "properties": {
+      "compounds": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "smiles": { "type": "string", "description": "SMILES string" },
+            "id": { "type": "string", "description": "Unique identifier for the compound" }
+          },
+          "required": ["smiles", "id"]
+        },
+        "description": "Compounds to triage as a list of {smiles, id} objects; both fields required, ids unique. Fed to the first stage (structure-alerts).",
+        "x-unique-keys": ["id"],
+        "x-input": true,
+        "x-step": "screen_alerts"
+      },
+      "receptor": {
+        "type": "string",
+        "description": "Protein receptor structure file (PDB). Uploaded/selected at run time and handed to the docking stage (autodock-vina).",
+        "x-input": true,
+        "x-step": "dock_vina"
+      }
+    },
+    "required": ["compounds", "receptor"],
+    "example": {
+      "compounds": [
+        { "smiles": "CC(=O)Oc1ccccc1C(=O)O", "id": "aspirin" },
+        { "smiles": "CC(C)Cc1ccc(cc1)C(C)C(=O)O", "id": "ibuprofen" },
+        { "smiles": "Oc1ccccc1O", "id": "catechol-pains" }
+      ],
+      "receptor": "receptor.pdb"
+    }
+  },
+  "default_parameters": {}
+}

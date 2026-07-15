@@ -359,3 +359,4 @@ var. The structure-viewer Dockerfile shows the pattern.
 - [Tool Registration Guide](tool-guide.md) — Registering computational tools (pypi and container)
 - [Agent Building Guide](agent-guide.md) — Building and deploying AI agents
 - [Task Guide](task-guide.md) — Authoring and registering human tasks (offline work for a person or team)
+- [Pipeline Building Guide](pipeline-guide.md) — Chaining tools into DAG workflows (hit-triage example)

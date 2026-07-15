@@ -303,3 +303,4 @@ than a note in a comment thread — so model the deliverable, not the conversati
 - [Tool Registration Guide](tool-guide.md) — Registering computational tools (pypi and container)
 - [Agent Building Guide](agent-guide.md) — Building and deploying AI agents
 - [App Registration Guide](app-guide.md) — Building, registering, and deploying embedded apps
+- [Pipeline Building Guide](pipeline-guide.md) — Chaining tools into DAG workflows (hit-triage example)
