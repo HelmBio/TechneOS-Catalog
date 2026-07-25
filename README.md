@@ -46,15 +46,16 @@ Catalog packages reach the platform in two ways, both index/API based — there 
 ### Package index
 
 The wheels the register scripts import (`techneos-management`, plus
-`techneos-tool-runtime` once tools arrive) come from a package index declared in
-[pyproject.toml](pyproject.toml) as `[[tool.uv.index]]` — locally the dev stack's
-devpi at `http://localhost:3141/simple/`. `uv run` / `uv sync` resolve against it
-with no extra setup, so registration "just works" against a running local stack.
+`techneos-tool-runtime` once tools arrive) come from a package index proxied
+through the gateway at `{PLATFORM_API_URL}/simple/`. The `bin/register.sh`
+script derives `UV_DEFAULT_INDEX` and `UV_PUBLISH_URL` from `PLATFORM_API_URL`
+before invoking uv, so the same codebase registers against different indexes
+depending on the environment:
+
+- **Dev** (`.env.dev`): gateway at `http://localhost:8000/simple/`
+- **Prod** (`.env.prod`): gateway at the configured URL
 
 > Requires `techneos-management >= 0.1`; catalog packages pin it.
-
-Production index configuration (a hosted registry) is wired up when the platform's
-production deployment is set up.
 
 ### Gateway
 

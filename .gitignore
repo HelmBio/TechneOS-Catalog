@@ -15,6 +15,7 @@ uv.lock
 .env.dev
 .env.local
 .env.*.local
+.env.prod
 
 # Node / Next.js (apps)
 node_modules/

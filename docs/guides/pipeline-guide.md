@@ -196,6 +196,12 @@ The pipeline detail page separates **metadata**, **shape**, and **bindings**:
   version's bindings **in place** while it has no runs. Once a version is
   `active`/`deprecated` or has runs, its binding is frozen — create a new version.
 - **Evolving the topology** requires a **fork** (`POST /pipelines/{id}/fork`).
+- **Duplicate** (header action) — opens the new-pipeline form pre-filled from this
+  pipeline's shape as an independent copy (name suffixed "(copy)"), leaving the
+  original untouched. It's a starting point for a hand-edited variant, distinct
+  from a fork's tracked `forked_from` lineage. A pipeline is a pure definition
+  with no artifact, so a copy stands on its own — unlike a tool, which is backed by
+  a published wheel or image and so has no duplicate action.
 
 ### Required Fields
 

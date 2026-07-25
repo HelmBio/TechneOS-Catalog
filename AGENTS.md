@@ -10,10 +10,11 @@ first entry.
 
 ## Setup
 
-The repo is pinned to Python 3.12 (`.python-version`). The package index (the
-local devpi that serves `techneos-management`) is declared in `pyproject.toml`
-(`[[tool.uv.index]]`), so `uv run` / `uv sync` resolve it with no setup — just have
-the platform's dev stack up. (Needs `techneos-management >= 0.1`.)
+The repo is pinned to Python 3.12 (`.python-version`). The package index is
+proxied through the gateway at `{PLATFORM_API_URL}/simple/`; `bin/register.sh`
+derives `UV_DEFAULT_INDEX` and `UV_PUBLISH_URL` from `PLATFORM_API_URL` before
+invoking uv. Just have the platform's dev stack up and `.env.dev` configured.
+(Needs `techneos-management >= 0.1`.)
 
 The gateway URL defaults to the local stack; copy the env template —
 `cp .env.example .env.dev` — to point at a non-default gateway (`bin/register.sh`
@@ -41,8 +42,7 @@ The invocation is chosen from `delivery` in the entry's `[tool.techneos]`:
 
 - **`delivery = "pypi"`** (pypi tools, agents): the register script imports its own
   entry point at pre-flight, so it needs that package's deps (e.g. rdkit) and runs
-  **from the package dir** with the `publish` group. Those packages declare their own
-  `[[tool.uv.index]]` so uv resolves `techneos-management` there too.
+  **from the package dir** with the `publish` group.
 - **everything else** (container tools, and the def-only types — datasets, tasks,
   pipelines, apps): a container tool validates its entry point *statically* and builds
   an image, so its deps live in the image, never on the host. These need only

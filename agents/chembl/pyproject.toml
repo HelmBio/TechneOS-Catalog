@@ -42,10 +42,3 @@ dev = [
 ]
 # Build tooling for build_and_register.py — not shipped in the wheel.
 publish = ["techneos-management>=0.1,<1"]
-
-# Local dev package index (devpi from the platform's dev stack) — where uv resolves
-# techneos-management when this package is built/registered from its own directory.
-[[tool.uv.index]]
-name = "devpi"
-url = "http://localhost:3141/simple/"
-default = true

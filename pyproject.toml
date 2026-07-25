@@ -32,10 +32,3 @@ tooling = [
 [tool.uv]
 # Do not implicitly treat this directory as a buildable package.
 package = false
-
-# Local dev package index (devpi from the platform's dev stack) — where uv resolves
-# techneos-management for the register scripts.
-[[tool.uv.index]]
-name = "devpi"
-url = "http://localhost:3141/simple/"
-default = true
