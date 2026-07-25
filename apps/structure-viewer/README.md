@@ -45,10 +45,10 @@ The script reads `app_def.json` for the static App metadata and `package.json`'s
 ## Remove
 
 ```bash
-./bin/app_removal.sh structure-viewer
+./bin/unregister.sh app structure-viewer
 
 # Preview without changes
-./bin/app_removal.sh structure-viewer --dry-run
+./bin/unregister.sh app structure-viewer --dry-run
 ```
 
 Calls `DELETE /api/v1/apps/{id}`. The app-service stops the running container and

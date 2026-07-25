@@ -10,7 +10,7 @@ Usage:
     bin/register.sh apps/structure-viewer --skip-build   # | --skip-deploy
 
 Removal:
-    ./bin/app_removal.sh structure-viewer
+    ./bin/unregister.sh app structure-viewer
 """
 
 from __future__ import annotations

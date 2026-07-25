@@ -49,8 +49,9 @@ bin/register.sh tasks/synthesis-request
 ```
 
 Because a task directory has no `pyproject.toml`, `bin/register.sh` runs it from
-the repo root with the `tooling` dependency group — the group that provides
-`techneos-management`. Nothing else is installed, because nothing else is needed.
+the repo root in an ephemeral, lock-free env that pulls in just `techneos-management`
+(`uv run --no-project --with techneos-management`). Nothing else is installed,
+because nothing else is needed.
 
 ---
 
@@ -126,7 +127,7 @@ deployment, and only with a slug you have confirmed exists.
    `output_schema` on submit).
 4. **Revise** by editing `task_def.json` and re-registering (see
    [Versioning](#versioning)).
-5. **Remove** with `bin/task_removal.sh` — runs, submitted files, versions, task.
+5. **Remove** with `bin/unregister.sh task` — runs, submitted files, versions, task.
 
 Unlike a computational tool, a task has no `draft → testing → active` version
 gate — there is no artifact to validate, so a registered task is runnable
@@ -233,19 +234,19 @@ The assignee then advances the run through its action log and finishes it via
 
 ## Removal
 
-Use `bin/task_removal.sh` — it is the task-aware path, and it cleans up the run
+Use `bin/unregister.sh task` — it is the task-aware path, and it cleans up the run
 history and the submitted files that a plain tool removal would leave behind:
 
 ```bash
 # Preview first — always
-bin/task_removal.sh synthesis-request --dry-run
+bin/unregister.sh task synthesis-request --dry-run
 
 # Remove the task: all runs (+ their MinIO files), all versions, then the task
-bin/task_removal.sh synthesis-request
+bin/unregister.sh task synthesis-request
 
 # Scoped to one version: that version's runs and the version itself.
 # The task and its other versions survive.
-bin/task_removal.sh synthesis-request v2
+bin/unregister.sh task synthesis-request v2
 ```
 
 A run that is still open counts as **active**, and removal stops to confirm before

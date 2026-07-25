@@ -4,8 +4,8 @@
 Builds + pushes the Docker image (non-local), records it, and upserts the Tool +
 container ToolVersion via ``management.catalog.register_container_tool``.
 
-    uv run --group tooling python tools/autodock-vina/build_and_register.py            # local build
-    uv run --group tooling python tools/autodock-vina/build_and_register.py --env=local --upsert
+    cd tools/autodock-vina && uv run --group publish python build_and_register.py            # local build
+    cd tools/autodock-vina && uv run --group publish python build_and_register.py --env=local --upsert
 """
 
 from __future__ import annotations

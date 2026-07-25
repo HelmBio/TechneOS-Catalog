@@ -456,7 +456,7 @@ the agent-service uses to install the wheel at startup. Arguments pass through t
 the underlying script: `--skip-build`, `--skip-publish`, `--upsert`. See
 [`agents/chembl/build_and_register.py`](../../agents/chembl/build_and_register.py).
 
-To remove: `./bin/agent_removal.sh chembl-research-assistant`.
+To remove: `./bin/unregister.sh agent chembl-research-assistant`.
 
 ### Custom Agents
 
@@ -647,7 +647,7 @@ Then **restart the platform's agent service** so it picks up the new
 To remove your agent later:
 
 ```bash
-./bin/agent_removal.sh my-agent
+./bin/unregister.sh agent my-agent
 ```
 
 ### 5. Write tests

@@ -119,8 +119,8 @@ SCRIPT_ENV="$ENV"
 
 # techneos-management is env-specific (it lives on the per-env gateway index), so
 # the tooling path resolves it ephemerally against UV_DEFAULT_INDEX rather than
-# from a committed lock — see the header note. Keep this constraint in sync with
-# the root pyproject's `tooling` group.
+# from a committed lock — see the header note. bin/unregister.sh keeps an identical
+# TOOLING_DEPS list; keep the two in sync.
 TOOLING_DEPS=(--with "techneos-management>=0.1,<1" --with "python-dotenv>=1.0")
 
 # --- Register each entry ---

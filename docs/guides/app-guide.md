@@ -57,10 +57,10 @@ path, auth mode, etc.) is static metadata that lives in
 `app_def.json`.
 
 > **Removal lives elsewhere.** There's no `remove.py` next to the
-> registration script. By convention, all destructive operations live under
-> `bin/` (alongside `dataset_removal.sh` and `agent_removal.sh`) so they're
+> registration script. By convention, all destructive operations live in the
+> single `bin/unregister.sh` entry point so they're
 > easy to audit and hard to invoke accidentally. To unregister an App, use
-> `bin/app_removal.sh <slug-or-uuid>` — covered in
+> `bin/unregister.sh app <slug-or-uuid>` — covered in
 > [Removal](#removal) below.
 
 ---
@@ -103,7 +103,7 @@ need a build or deploy — only the API registration step.
                                                   probe /healthz
 
                   ┌──────────────────────────────┐
-                  │  bin/app_removal.sh <slug>   │
+                  │  bin/unregister.sh app <slug>│
                   │                              │
                   │  1. DELETE /apps/{id}        │ ──► app-service deployer
                   └──────────────────────────────┘         │
@@ -113,10 +113,9 @@ need a build or deploy — only the API registration step.
 ```
 
 The build/register/deploy steps live in **one script per app** under
-`apps/<slug>/`, so releasing an App touches nothing else. Removal lives under
-`bin/` with the other destructive operations (`dataset_removal.sh`,
-`agent_removal.sh`) — one consistent place to audit anything that deletes
-platform state.
+`apps/<slug>/`, so releasing an App touches nothing else. Removal goes through
+the shared `bin/unregister.sh app <slug>` — one consistent place to audit
+anything that deletes platform state.
 
 ---
 
@@ -212,21 +211,20 @@ then re-creates from scratch.
 
 ## Removal
 
-Removal lives under `bin/` alongside `dataset_removal.sh` and
-`agent_removal.sh`. The script accepts a slug or a UUID — the same wrapper
-works for any App, not just structure-viewer:
+Removal is handled by the shared `bin/unregister.sh app <slug>`. It accepts a
+slug or a UUID — the same wrapper works for any App, not just structure-viewer:
 
 ```bash
-./bin/app_removal.sh structure-viewer
+./bin/unregister.sh app structure-viewer
 
 # Preview without changes
-./bin/app_removal.sh structure-viewer --dry-run
+./bin/unregister.sh app structure-viewer --dry-run
 
 # No confirmation prompt
-./bin/app_removal.sh structure-viewer --yes
+./bin/unregister.sh app structure-viewer --yes
 
 # Remove by UUID
-./bin/app_removal.sh 2a092397-22bd-476a-b379-7ba41f2103b6
+./bin/unregister.sh app 2a092397-22bd-476a-b379-7ba41f2103b6
 ```
 
 Flags:
@@ -253,7 +251,7 @@ What it does **not** do:
 
 The wrapper is a thin shim — the implementation lives in
 `packages/management/src/management/scripts/remove_app.py` (in the platform repo),
-following the same pattern as the other `*_removal.sh` scripts.
+one `remove_<type>.py` per resource type, all dispatched by `bin/unregister.sh`.
 
 ---
 
@@ -301,7 +299,7 @@ apps/your-app-name/
 └── src/ public/ ...          # your application source
 ```
 
-Removal is handled by the shared `bin/app_removal.sh <slug>` — no
+Removal is handled by the shared `bin/unregister.sh app <slug>` — no
 per-app removal script is needed. The wrapper works for any App
 because it looks the resource up by slug or UUID.
 

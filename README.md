@@ -39,7 +39,7 @@ Catalog packages reach the platform in two ways, both index/API based — there 
 
 | Coupling | Surface | Provided by |
 | --- | --- | --- |
-| Build/register | `management.catalog` / `management.registration` (imported by the `*register*.py` scripts) | `techneos-management` wheel from the package index (per-package `[dependency-groups] publish`; root tooling group for scripts without a pyproject) |
+| Build/register | `management.catalog` / `management.registration` (imported by the `*register*.py` scripts) | `techneos-management` wheel from the package index (per-package `[dependency-groups] publish`; an ephemeral `--with techneos-management` env for scripts without a pyproject) |
 | Tool runtime | `techneos_tool_runtime` (`artifact_path`, `write_artifact`, parsers) | `techneos-tool-runtime` wheel from the package index — the runtime library packaged tools build against |
 | API | `POST /api/v1/{datasets,tools,pipelines,apps,agents,compute-artifacts}` | the running gateway, selected by `--env` |
 

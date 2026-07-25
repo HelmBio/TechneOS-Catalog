@@ -46,7 +46,8 @@ The invocation is chosen from `delivery` in the entry's `[tool.techneos]`:
 - **everything else** (container tools, and the def-only types — datasets, tasks,
   pipelines, apps): a container tool validates its entry point *statically* and builds
   an image, so its deps live in the image, never on the host. These need only
-  `techneos-management` and run from the repo root with the `tooling` group.
+  `techneos-management` and run from the repo root in an ephemeral, lock-free env
+  (`uv run --no-project --with techneos-management`).
 
 ## Activating a tool version
 
@@ -67,16 +68,18 @@ uv run pytest
 
 ## Removing entries
 
-Each catalog type ships a `bin/<type>_removal.sh` alongside its content — a thin
-wrapper around `management.scripts.remove_*` (from the `techneos-management` wheel via
-the root `tooling` group) that hits the gateway API and deletes the resource plus
-its versions/runs/artifacts. `--dry-run` previews the delete first.
+A single `bin/unregister.sh <type> <slug>` handles removal for every catalog type
+(`tool`, `agent`, `app`, `dataset`, `task`, `pipeline`) — the counterpart to
+`register.sh`. It is a thin wrapper around `management.scripts.remove_*` (from the
+`techneos-management` wheel, resolved ephemerally against the per-env gateway index
+like `register.sh`) that hits the gateway API and deletes the resource plus its
+versions/runs/artifacts. `--dry-run` previews the delete first.
 
 ```bash
-bin/dataset_removal.sh <slug> --dry-run
-bin/agent_removal.sh <slug> --dry-run
-bin/app_removal.sh <slug> --dry-run
-bin/tool_removal.sh <slug> --dry-run    # optional trailing version: <slug> v2
+bin/unregister.sh dataset <slug> --dry-run
+bin/unregister.sh agent <slug> --dry-run
+bin/unregister.sh app <slug> --dry-run
+bin/unregister.sh tool <slug> --dry-run    # optional trailing version: <slug> v2
 ```
 
 Removing an agent deletes its `AgentDefinition` row and cascades to its runs; the

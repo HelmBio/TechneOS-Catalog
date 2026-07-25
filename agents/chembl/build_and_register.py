@@ -5,9 +5,9 @@ Builds + publishes the wheel, records it in the compute-artifact inventory, and
 upserts the AgentDefinition (with runtime ``package_config``) — all via the shared
 ``management.catalog.register_agent`` orchestrator.
 
-    uv run --group tooling python agents/chembl/build_and_register.py            # full
-    uv run --group tooling python agents/chembl/build_and_register.py --skip-build
-    uv run --group tooling python agents/chembl/build_and_register.py --env=local --upsert
+    cd agents/chembl && uv run --group publish python build_and_register.py            # full
+    cd agents/chembl && uv run --group publish python build_and_register.py --skip-build
+    cd agents/chembl && uv run --group publish python build_and_register.py --env=local --upsert
 """
 
 from __future__ import annotations

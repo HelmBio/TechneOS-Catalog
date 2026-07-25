@@ -87,12 +87,12 @@ is `pipelines/hit-triage`:
 bin/register.sh pipelines/hit-triage --upsert
 
 # remove (cascades versions/runs); --dry-run to preview, --force to cancel active runs
-bin/pipeline_removal.sh hit-triage
+bin/unregister.sh pipeline hit-triage
 ```
 
 `register.py` preflights that the referenced tools are registered and **active**
 (the service rejects creation otherwise), then registers the definition via
-`management.catalog.register_pipeline`. `bin/pipeline_removal.sh` wraps
+`management.catalog.register_pipeline`. `bin/unregister.sh pipeline` wraps
 `management.scripts.remove_pipeline` and removes any pipeline by slug.
 
 ### Via API
