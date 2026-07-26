@@ -1,0 +1,163 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1020" width="1600" height="1020" font-family="Inter, Helvetica Neue, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+    <marker id="arrowIndigo" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4f46e5"/>
+    </marker>
+  </defs>
+
+  <rect width="1600" height="1020" fill="#ffffff"/>
+
+  <text x="60" y="58" font-size="34" font-weight="700" fill="#0f172a">TechneOS Architecture Diagram</text>
+  <line x1="60" y1="76" x2="1540" y2="76" stroke="#e2e8f0" stroke-width="2"/>
+
+  <!-- ============ CLIENTS ============ -->
+  <text x="60" y="118" font-size="13" font-weight="700" fill="#94a3b8" letter-spacing="1.5">CLIENTS</text>
+  <g>
+    <rect x="60" y="132" width="300" height="80" rx="10" fill="#eef2ff" stroke="#c7d2fe" stroke-width="2"/>
+    <text x="210" y="166" font-size="19" font-weight="600" fill="#312e81" text-anchor="middle">Web Portal</text>
+    <text x="210" y="190" font-size="14" fill="#6366f1" text-anchor="middle">Next.js 16 · React 19 · Tailwind v4</text>
+
+    <rect x="390" y="132" width="300" height="80" rx="10" fill="#eef2ff" stroke="#c7d2fe" stroke-width="2"/>
+    <text x="540" y="166" font-size="19" font-weight="600" fill="#312e81" text-anchor="middle">CLI</text>
+    <text x="540" y="190" font-size="14" fill="#6366f1" text-anchor="middle">techneos · Typer · Rich</text>
+
+    <rect x="720" y="132" width="300" height="80" rx="10" fill="#eef2ff" stroke="#c7d2fe" stroke-width="2"/>
+    <text x="870" y="166" font-size="19" font-weight="600" fill="#312e81" text-anchor="middle">REST clients</text>
+    <text x="870" y="190" font-size="14" fill="#6366f1" text-anchor="middle">CI, notebooks, scripts</text>
+
+    <rect x="1090" y="132" width="450" height="80" rx="10" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="2"/>
+    <text x="1315" y="162" font-size="19" font-weight="600" fill="#14532d" text-anchor="middle">techneos-catalog</text>
+    <text x="1315" y="187" font-size="13.5" fill="#16a34a" text-anchor="middle">separate repo — no source dependency on the platform</text>
+  </g>
+
+  <path d="M 210 212 L 210 252" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#arrowIndigo)"/>
+  <path d="M 540 212 L 540 252" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#arrowIndigo)"/>
+  <path d="M 870 212 L 870 252" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#arrowIndigo)"/>
+  <path d="M 1315 212 L 1315 236 L 1100 236 L 1100 252" stroke="#16a34a" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="1128" y="231" font-size="12.5" fill="#16a34a" font-style="italic">registers via the REST API</text>
+
+  <!-- ============ GATEWAY ============ -->
+  <g>
+    <rect x="60" y="252" width="1480" height="76" rx="10" fill="#4f46e5"/>
+    <text x="92" y="280" font-size="21" font-weight="700" fill="#ffffff">API Gateway</text>
+    <text x="92" y="302" font-size="14" fill="#c7d2fe">:8000 — the single front door</text>
+    <text x="92" y="319" font-size="11" fill="#a5b4fc">FastAPI · Swagger UI at /docs</text>
+    <text x="700" y="296" font-size="16" font-weight="600" fill="#e0e7ff">reverse proxy</text>
+    <text x="1000" y="296" font-size="16" font-weight="600" fill="#e0e7ff">auth middleware</text>
+    <text x="1300" y="296" font-size="16" font-weight="600" fill="#e0e7ff">routing</text>
+  </g>
+
+  <!-- ============ SERVICES ============ -->
+  <text x="60" y="372" font-size="13" font-weight="700" fill="#94a3b8" letter-spacing="1.5">DOMAIN SERVICES</text>
+  <text x="245" y="372" font-size="13" fill="#cbd5e1">FastAPI · SQLAlchemy 2.0 async · Pydantic v2</text>
+  <g font-size="16" font-weight="600" fill="#1e293b" text-anchor="middle">
+    <rect x="60" y="386" width="172" height="66" rx="9" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="146" y="414">auth</text><text x="146" y="436" font-size="13" font-weight="400" fill="#64748b">:8001</text>
+
+    <rect x="248" y="386" width="172" height="66" rx="9" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="334" y="414">dataset</text><text x="334" y="436" font-size="13" font-weight="400" fill="#64748b">:8002</text>
+
+    <rect x="436" y="386" width="172" height="66" rx="9" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="522" y="414">tool</text><text x="522" y="436" font-size="13" font-weight="400" fill="#64748b">:8003</text>
+
+    <rect x="624" y="386" width="172" height="66" rx="9" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="710" y="414">pipeline</text><text x="710" y="436" font-size="13" font-weight="400" fill="#64748b">:8004</text>
+
+    <rect x="812" y="386" width="172" height="66" rx="9" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="898" y="414">agent</text><text x="898" y="436" font-size="13" font-weight="400" fill="#64748b">:8005</text>
+
+    <rect x="1000" y="386" width="172" height="66" rx="9" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="1086" y="414">notification</text><text x="1086" y="436" font-size="13" font-weight="400" fill="#64748b">:8006</text>
+
+    <rect x="1188" y="386" width="172" height="66" rx="9" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="1274" y="414">app</text><text x="1274" y="436" font-size="13" font-weight="400" fill="#64748b">:8007</text>
+
+    <rect x="1368" y="386" width="172" height="66" rx="9" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="1454" y="414">task</text><text x="1454" y="436" font-size="13" font-weight="400" fill="#64748b">:8008</text>
+  </g>
+
+  <!-- core -->
+  <rect x="60" y="466" width="1480" height="50" rx="9" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+  <text x="92" y="497" font-size="17" font-weight="700" fill="#78350f">Shared Library</text>
+  <text x="300" y="497" font-size="14.5" fill="#92400e">models · schemas · auth · storage · cache · events · agent bridge</text>
+  <text x="1508" y="497" font-size="13" fill="#b45309" text-anchor="end">every service builds on it</text>
+
+  <path d="M 710 516 L 710 566" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- ============ EXECUTION ============ -->
+  <text x="60" y="556" font-size="13" font-weight="700" fill="#94a3b8" letter-spacing="1.5">EXECUTION LAYER</text>
+  <rect x="60" y="566" width="1480" height="150" rx="10" fill="#fdf4ff" stroke="#e9d5ff" stroke-width="2"/>
+
+  <rect x="88" y="590" width="330" height="102" rx="9" fill="#ffffff" stroke="#d8b4fe" stroke-width="2"/>
+  <text x="253" y="622" font-size="18" font-weight="600" fill="#581c87" text-anchor="middle">Apache Airflow</text>
+  <text x="253" y="646" font-size="13.5" fill="#7e22ce" text-anchor="middle">DAGs · ToolOperator</text>
+  <text x="253" y="668" font-size="13.5" fill="#7e22ce" text-anchor="middle">status callbacks</text>
+
+  <path d="M 418 641 L 468 641" stroke="#a855f7" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <text x="490" y="588" font-size="13" font-weight="700" fill="#a855f7" letter-spacing="1">PLUGGABLE COMPUTE BACKENDS — same tool definition, different target</text>
+  <g text-anchor="middle">
+    <rect x="490" y="600" width="238" height="82" rx="9" fill="#ffffff" stroke="#d8b4fe" stroke-width="2"/>
+    <text x="609" y="634" font-size="17" font-weight="600" fill="#581c87">Docker</text>
+    <text x="609" y="659" font-size="13" fill="#a855f7">local / single node</text>
+
+    <rect x="744" y="600" width="238" height="82" rx="9" fill="#ffffff" stroke="#d8b4fe" stroke-width="2"/>
+    <text x="863" y="634" font-size="17" font-weight="600" fill="#581c87">AWS Batch</text>
+    <text x="863" y="659" font-size="13" fill="#a855f7">elastic cloud</text>
+
+    <rect x="998" y="600" width="238" height="82" rx="9" fill="#ffffff" stroke="#d8b4fe" stroke-width="2"/>
+    <text x="1117" y="634" font-size="17" font-weight="600" fill="#581c87">Slurm</text>
+    <text x="1117" y="659" font-size="13" fill="#a855f7">on-prem HPC</text>
+
+    <rect x="1252" y="600" width="260" height="82" rx="9" fill="#ffffff" stroke="#d8b4fe" stroke-width="2"/>
+    <text x="1382" y="634" font-size="17" font-weight="600" fill="#581c87">Human</text>
+    <text x="1382" y="659" font-size="13" fill="#a855f7">wet lab experiments</text>
+  </g>
+
+  <!-- ============ INFRA ============ -->
+  <text x="60" y="760" font-size="13" font-weight="700" fill="#94a3b8" letter-spacing="1.5">INFRASTRUCTURE</text>
+  <g text-anchor="middle">
+    <rect x="60" y="774" width="235" height="72" rx="9" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="177" y="802" font-size="16" font-weight="600" fill="#334155">PostgreSQL 16</text>
+    <text x="177" y="822" font-size="12.5" fill="#64748b">system of record</text>
+
+    <rect x="309" y="774" width="235" height="72" rx="9" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="426" y="802" font-size="16" font-weight="600" fill="#334155">MinIO</text>
+    <text x="426" y="822" font-size="12.5" fill="#64748b">artifacts &amp; datasets</text>
+
+    <rect x="558" y="774" width="235" height="72" rx="9" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="675" y="802" font-size="16" font-weight="600" fill="#334155">Valkey</text>
+    <text x="675" y="822" font-size="12.5" fill="#64748b">cache &amp; events</text>
+
+    <rect x="807" y="774" width="235" height="72" rx="9" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="924" y="802" font-size="16" font-weight="600" fill="#334155">Package Index</text>
+    <text x="924" y="822" font-size="12.5" fill="#64748b">tool &amp; platform wheels</text>
+
+    <rect x="1056" y="774" width="235" height="72" rx="9" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="1173" y="802" font-size="16" font-weight="600" fill="#334155">Docker Registry</text>
+    <text x="1173" y="822" font-size="12.5" fill="#64748b">tool &amp; platform images</text>
+
+    <rect x="1305" y="774" width="235" height="72" rx="9" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="1422" y="802" font-size="16" font-weight="600" fill="#334155">Keycloak</text>
+    <text x="1422" y="822" font-size="12.5" fill="#64748b">SSO — Google · GitHub</text>
+  </g>
+
+  <!-- ============ FOOTER BAND ============ -->
+  <rect x="60" y="882" width="1480" height="84" rx="10" fill="#0f172a"/>
+  <text x="92" y="914" font-size="15" font-weight="700" fill="#ffffff">RBAC</text>
+  <text x="92" y="940" font-size="13.5" fill="#94a3b8">own · team · org · platform</text>
+
+  <text x="392" y="914" font-size="15" font-weight="700" fill="#ffffff">Reproducibility</text>
+  <text x="392" y="940" font-size="13.5" fill="#94a3b8">pipeline versions pin tool versions + parameters</text>
+
+  <text x="880" y="914" font-size="15" font-weight="700" fill="#ffffff">Deployment</text>
+  <text x="880" y="940" font-size="13.5" fill="#94a3b8">SaaS multi-tenant  ·  self-hosted on-premises</text>
+
+  <text x="1290" y="914" font-size="15" font-weight="700" fill="#ffffff">Tooling</text>
+  <text x="1290" y="940" font-size="13.5" fill="#94a3b8">uv · Ruff · mypy strict · pytest</text>
+
+  <text x="60" y="1000" font-size="12.5" fill="#94a3b8">Python 3.12 · FastAPI · PydanticAI · Alembic     —     the portal, CLI, and catalog reach the platform only through the gateway REST API</text>
+</svg>
