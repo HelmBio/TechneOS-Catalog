@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TechneOS — Demo Slides</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: #1e293b;
+    font-family: Inter, Helvetica Neue, Arial, sans-serif;
+    overflow: hidden;
+  }
+  .deck {
+    position: relative;
+    height: 100vh; width: 100vw;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .slide {
+    display: none;
+    width: 92vw; max-width: 1600px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    overflow: hidden;
+  }
+  .slide.active { display: block; }
+  .slide svg { display: block; width: 100%; height: auto; }
+
+  .controls {
+    position: fixed; bottom: 22px; left: 0; right: 0;
+    display: flex; align-items: center; justify-content: center;
+    gap: 18px; z-index: 10;
+  }
+  .nav-btn {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #e2e8f0;
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s ease;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.25); }
+  .nav-btn:disabled { opacity: 0.3; cursor: default; }
+  .nav-btn:disabled:hover { background: rgba(255,255,255,0.12); }
+
+  .dots { display: flex; gap: 10px; }
+  .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    border: none; cursor: pointer; padding: 0;
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+  .dot.active { background: #818cf8; transform: scale(1.3); }
+
+  .counter {
+    position: fixed; bottom: 26px; right: 28px;
+    color: rgba(255,255,255,0.5);
+    font-size: 13px; letter-spacing: 0.5px;
+    z-index: 10;
+  }
+  .fs-btn {
+    position: fixed; top: 20px; right: 24px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #e2e8f0;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    z-index: 10;
+  }
+  .fs-btn:hover { background: rgba(255,255,255,0.25); }
+  .hint {
+    position: fixed; top: 20px; left: 24px;
+    color: rgba(255,255,255,0.35);
+    font-size: 12px;
+    z-index: 10;
+  }
+</style>
+</head>
+<body>
+
+<div class="hint">← → arrow keys to navigate</div>
+<button class="fs-btn" onclick="toggleFullscreen()">Fullscreen</button>
+
+<div class="deck">
+
+  <!-- ============ SLIDE 1: COVER / COLD OPEN ============ -->
+  <div class="slide active" data-name="Cover">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" font-family="Inter, Helvetica Neue, Arial, sans-serif">
+      <rect width="1600" height="900" fill="#ffffff"/>
+      <g stroke="#c7d2fe" stroke-width="2.5" fill="none" opacity="0.9">
+        <line x1="1290" y1="120" x2="1360" y2="80"/>
+        <line x1="1360" y1="80" x2="1440" y2="110"/>
+        <line x1="1360" y1="80" x2="1380" y2="160"/>
+        <line x1="1440" y1="110" x2="1500" y2="70"/>
+        <line x1="1380" y1="160" x2="1450" y2="190"/>
+      </g>
+      <g fill="#4f46e5">
+        <circle cx="1290" cy="120" r="7"/>
+        <circle cx="1360" cy="80" r="9"/>
+        <circle cx="1440" cy="110" r="7"/>
+        <circle cx="1380" cy="160" r="7"/>
+        <circle cx="1500" cy="70" r="6"/>
+        <circle cx="1450" cy="190" r="6"/>
+      </g>
+      <g stroke="#e0e7ff" stroke-width="2.5" fill="none" opacity="0.9">
+        <line x1="90" y1="760" x2="160" y2="800"/>
+        <line x1="160" y1="800" x2="150" y2="850"/>
+        <line x1="160" y1="800" x2="230" y2="790"/>
+        <line x1="90" y1="760" x2="60" y2="820"/>
+      </g>
+      <g fill="#a5b4fc">
+        <circle cx="90" cy="760" r="6"/>
+        <circle cx="160" cy="800" r="8"/>
+        <circle cx="150" cy="850" r="6"/>
+        <circle cx="230" cy="790" r="6"/>
+        <circle cx="60" cy="820" r="5"/>
+      </g>
+      <g text-anchor="middle">
+        <text x="800" y="380" font-size="120" font-weight="700" fill="#0f172a">TechneOS</text>
+        <text x="800" y="430" font-size="30" fill="#64748b" letter-spacing="1">Operating System for Research</text>
+        <line x1="650" y1="475" x2="950" y2="475" stroke="#4f46e5" stroke-width="3"/>
+        <text x="800" y="530" font-size="27" font-weight="600" fill="#312e81">
+          A Platform Demo for Computational Chemists
+        </text>
+      </g>
+      <text x="800" y="605" font-size="14" font-weight="700" fill="#94a3b8" text-anchor="middle" letter-spacing="2">IN THIS SESSION</text>
+      <g text-anchor="middle">
+        <text x="800" y="650" font-size="23" font-weight="600" fill="#4338ca">&#9679;&#160;&#160;Pipeline Execution (hit-triage)</text>
+        <text x="800" y="692" font-size="23" font-weight="600" fill="#4338ca">&#9679;&#160;&#160;Tool Registration (molecule-property-calculator)</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ============ SLIDE 2: ARCHITECTURE DIAGRAM ============ -->
+  <div class="slide" data-name="Architecture">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1020" font-family="Inter, Helvetica Neue, Arial, sans-serif">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+        </marker>
+        <marker id="arrowIndigo" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#4f46e5"/>
+        </marker>
+      </defs>
+      <rect width="1600" height="1020" fill="#ffffff"/>
+      <text x="60" y="58" font-size="34" font-weight="700" fill="#0f172a">TechneOS Architecture Diagram</text>
+      <line x1="60" y1="76" x2="1540" y2="76" stroke="#e2e8f0" stroke-width="2"/>
+
+      <text x="60" y="118" font-size="13" font-weight="700" fill="#94a3b8" letter-spacing="1.5">CLIENTS</text>
+      <g>
+        <rect x="60" y="132" width="300" height="80" rx="10" fill="#eef2ff" stroke="#c7d2fe" stroke-width="2"/>
+        <text x="210" y="166" font-size="19" font-weight="600" fill="#312e81" text-anchor="middle">Web Portal</text>
+        <text x="210" y="190" font-size="14" fill="#6366f1" text-anchor="middle">Next.js 16 · React 19 · Tailwind v4</text>
+
+        <rect x="390" y="132" width="300" height="80" rx="10" fill="#eef2ff" stroke="#c7d2fe" stroke-width="2"/>
+        <text x="540" y="166" font-size="19" font-weight="600" fill="#312e81" text-anchor="middle">CLI</text>
+        <text x="540" y="190" font-size="14" fill="#6366f1" text-anchor="middle">techneos · Typer · Rich</text>
+
+        <rect x="720" y="132" width="300" height="80" rx="10" fill="#eef2ff" stroke="#c7d2fe" stroke-width="2"/>
+        <text x="870" y="166" font-size="19" font-weight="600" fill="#312e81" text-anchor="middle">REST clients</text>
+        <text x="870" y="190" font-size="14" fill="#6366f1" text-anchor="middle">CI, notebooks, scripts</text>
+
+        <rect x="1090" y="132" width="450" height="80" rx="10" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="2"/>
+        <text x="1315" y="162" font-size="19" font-weight="600" fill="#14532d" text-anchor="middle">techneos-catalog</text>
+        <text x="1315" y="187" font-size="13.5" fill="#16a34a" text-anchor="middle">separate repo — no source dependency on the platform</text>
+      </g>
+
+      <path d="M 210 212 L 210 252" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#arrowIndigo)"/>
+      <path d="M 540 212 L 540 252" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#arrowIndigo)"/>
+      <path d="M 870 212 L 870 252" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#arrowIndigo)"/>
+      <path d="M 1315 212 L 1315 236 L 1100 236 L 1100 252" stroke="#16a34a" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+      <text x="1128" y="231" font-size="12.5" fill="#16a34a" font-style="italic">registers via the REST API</text>
+
+      <g>
+        <rect x="60" y="252" width="1480" height="76" rx="10" fill="#4f46e5"/>
+        <text x="92" y="280" font-size="21" font-weight="700" fill="#ffffff">API Gateway</text>
+        <text x="92" y="302" font-size="14" fill="#c7d2fe">:8000 — the single front door</text>
+        <text x="92" y="319" font-size="11" fill="#a5b4fc">FastAPI · Swagger UI at /docs</text>
+        <text x="700" y="296" font-size="16" font-weight="600" fill="#e0e7ff">reverse proxy</text>
+        <text x="1000" y="296" font-size="16" font-weight="600" fill="#e0e7ff">auth middleware</text>
+        <text x="1300" y="296" font-size="16" font-weight="600" fill="#e0e7ff">routing</text>
+      </g>
+
+      <text x="60" y="372" font-size="13" font-weight="700" fill="#94a3b8" letter-spacing="1.5">DOMAIN SERVICES</text>
+      <text x="245" y="372" font-size="13" fill="#cbd5e1">FastAPI · SQLAlchemy 2.0 async · Pydantic v2</text>
+      <g font-size="16" font-weight="600" fill="#1e293b" text-anchor="middle">
+        <rect x="60" y="386" width="172" height="66" rx="9" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+        <text x="146" y="414">auth</text><text x="146" y="436" font-size="13" font-weight="400" fill="#64748b">:8001</text>
+
+        <rect x="248" y="386" width="172" height="66" rx="9" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+        <text x="334" y="414">dataset</text><text x="334" y="436" font-size="13" font-weight="400" fill="#64748b">:8002</text>
+
+        <rect x="436" y="386" width="172" height="66" rx="9" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+        <text x="522" y="414">tool</text><text x="522" y="436" font-size="13" font-weight="400" fill="#64748b">:8003</text>
+
+        <rect x="624" y="386" width="172" height="66" rx="9" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+        <text x="710" y="414">pipeline</text><text x="710" y="436" font-size="13" font-weight="400" fill="#64748b">:8004</text>
+
+        <rect x="812" y="386" width="172" height="66" rx="9" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+        <text x="898" y="414">agent</text><text x="898" y="436" font-size="13" font-weight="400" fill="#64748b">:8005</text>
+
+        <rect x="1000" y="386" width="172" height="66" rx="9" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+        <text x="1086" y="414">notification</text><text x="1086" y="436" font-size="13" font-weight="400" fill="#64748b">:8006</text>
+
+        <rect x="1188" y="386" width="172" height="66" rx="9" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+        <text x="1274" y="414">app</text><text x="1274" y="436" font-size="13" font-weight="400" fill="#64748b">:8007</text>
+
+        <rect x="1368" y="386" width="172" height="66" rx="9" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+        <text x="1454" y="414">task</text><text x="1454" y="436" font-size="13" font-weight="400" fill="#64748b">:8008</text>
+      </g>
+
+      <rect x="60" y="466" width="1480" height="50" rx="9" fill="#fef3c7" stroke="#fcd34d" stroke-width="2"/>
+      <text x="92" y="497" font-size="17" font-weight="700" fill="#78350f">Shared Library</text>
+      <text x="300" y="497" font-size="14.5" fill="#92400e">models · schemas · auth · storage · cache · events · agent bridge</text>
+      <text x="1508" y="497" font-size="13" fill="#b45309" text-anchor="end">every service builds on it</text>
+
+      <path d="M 710 516 L 710 566" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+      <text x="60" y="556" font-size="13" font-weight="700" fill="#94a3b8" letter-spacing="1.5">EXECUTION LAYER</text>
+      <rect x="60" y="566" width="1480" height="150" rx="10" fill="#fdf4ff" stroke="#e9d5ff" stroke-width="2"/>
+
+      <rect x="88" y="590" width="330" height="102" rx="9" fill="#ffffff" stroke="#d8b4fe" stroke-width="2"/>
+      <text x="253" y="622" font-size="18" font-weight="600" fill="#581c87" text-anchor="middle">Apache Airflow</text>
+      <text x="253" y="646" font-size="13.5" fill="#7e22ce" text-anchor="middle">DAGs · ToolOperator</text>
+      <text x="253" y="668" font-size="13.5" fill="#7e22ce" text-anchor="middle">status callbacks</text>
+
+      <path d="M 418 641 L 468 641" stroke="#a855f7" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+      <text x="490" y="588" font-size="13" font-weight="700" fill="#a855f7" letter-spacing="1">PLUGGABLE COMPUTE BACKENDS — same tool definition, different target</text>
+      <g text-anchor="middle">
+        <rect x="490" y="600" width="238" height="82" rx="9" fill="#ffffff" stroke="#d8b4fe" stroke-width="2"/>
+        <text x="609" y="634" font-size="17" font-weight="600" fill="#581c87">Docker</text>
+        <text x="609" y="659" font-size="13" fill="#a855f7">local / single node</text>
+
+        <rect x="744" y="600" width="238" height="82" rx="9" fill="#ffffff" stroke="#d8b4fe" stroke-width="2"/>
+        <text x="863" y="634" font-size="17" font-weight="600" fill="#581c87">AWS Batch</text>
+        <text x="863" y="659" font-size="13" fill="#a855f7">elastic cloud</text>
+
+        <rect x="998" y="600" width="238" height="82" rx="9" fill="#ffffff" stroke="#d8b4fe" stroke-width="2"/>
+        <text x="1117" y="634" font-size="17" font-weight="600" fill="#581c87">Slurm</text>
+        <text x="1117" y="659" font-size="13" fill="#a855f7">on-prem HPC</text>
+
+        <rect x="1252" y="600" width="260" height="82" rx="9" fill="#ffffff" stroke="#d8b4fe" stroke-width="2"/>
+        <text x="1382" y="634" font-size="17" font-weight="600" fill="#581c87">Human</text>
+        <text x="1382" y="659" font-size="13" fill="#a855f7">wet lab experiments</text>
+      </g>
+
+      <text x="60" y="760" font-size="13" font-weight="700" fill="#94a3b8" letter-spacing="1.5">INFRASTRUCTURE</text>
+      <g text-anchor="middle">
+        <rect x="60" y="774" width="235" height="72" rx="9" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+        <text x="177" y="802" font-size="16" font-weight="600" fill="#334155">PostgreSQL 16</text>
+        <text x="177" y="822" font-size="12.5" fill="#64748b">system of record</text>
+
+        <rect x="309" y="774" width="235" height="72" rx="9" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+        <text x="426" y="802" font-size="16" font-weight="600" fill="#334155">MinIO</text>
+        <text x="426" y="822" font-size="12.5" fill="#64748b">artifacts &amp; datasets</text>
+
+        <rect x="558" y="774" width="235" height="72" rx="9" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+        <text x="675" y="802" font-size="16" font-weight="600" fill="#334155">Valkey</text>
+        <text x="675" y="822" font-size="12.5" fill="#64748b">cache &amp; events</text>
+
+        <rect x="807" y="774" width="235" height="72" rx="9" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+        <text x="924" y="802" font-size="16" font-weight="600" fill="#334155">Package Index</text>
+        <text x="924" y="822" font-size="12.5" fill="#64748b">tool &amp; platform wheels</text>
+
+        <rect x="1056" y="774" width="235" height="72" rx="9" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+        <text x="1173" y="802" font-size="16" font-weight="600" fill="#334155">Docker Registry</text>
+        <text x="1173" y="822" font-size="12.5" fill="#64748b">tool &amp; platform images</text>
+
+        <rect x="1305" y="774" width="235" height="72" rx="9" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+        <text x="1422" y="802" font-size="16" font-weight="600" fill="#334155">Keycloak</text>
+        <text x="1422" y="822" font-size="12.5" fill="#64748b">SSO — Google · GitHub</text>
+      </g>
+
+      <rect x="60" y="882" width="1480" height="84" rx="10" fill="#0f172a"/>
+      <text x="92" y="914" font-size="15" font-weight="700" fill="#ffffff">RBAC</text>
+      <text x="92" y="940" font-size="13.5" fill="#94a3b8">own · team · org · platform</text>
+
+      <text x="392" y="914" font-size="15" font-weight="700" fill="#ffffff">Reproducibility</text>
+      <text x="392" y="940" font-size="13.5" fill="#94a3b8">pipeline versions pin tool versions + parameters</text>
+
+      <text x="880" y="914" font-size="15" font-weight="700" fill="#ffffff">Deployment</text>
+      <text x="880" y="940" font-size="13.5" fill="#94a3b8">SaaS multi-tenant  ·  self-hosted on-premises</text>
+
+      <text x="1290" y="914" font-size="15" font-weight="700" fill="#ffffff">Tooling</text>
+      <text x="1290" y="940" font-size="13.5" fill="#94a3b8">uv · Ruff · mypy strict · pytest</text>
+
+      <text x="60" y="1000" font-size="12.5" fill="#94a3b8">Python 3.12 · FastAPI · PydanticAI · Alembic     —     the portal, CLI, and catalog reach the platform only through the gateway REST API</text>
+    </svg>
+  </div>
+
+  <!-- ============ SLIDE 3: CLOSE ============ -->
+  <div class="slide" data-name="Close">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" font-family="Inter, Helvetica Neue, Arial, sans-serif">
+      <rect width="1600" height="900" fill="#ffffff"/>
+      <g stroke="#c7d2fe" stroke-width="2.5" fill="none" opacity="0.9">
+        <line x1="1290" y1="120" x2="1360" y2="80"/>
+        <line x1="1360" y1="80" x2="1440" y2="110"/>
+        <line x1="1360" y1="80" x2="1380" y2="160"/>
+        <line x1="1440" y1="110" x2="1500" y2="70"/>
+        <line x1="1380" y1="160" x2="1450" y2="190"/>
+      </g>
+      <g fill="#4f46e5">
+        <circle cx="1290" cy="120" r="7"/>
+        <circle cx="1360" cy="80" r="9"/>
+        <circle cx="1440" cy="110" r="7"/>
+        <circle cx="1380" cy="160" r="7"/>
+        <circle cx="1500" cy="70" r="6"/>
+        <circle cx="1450" cy="190" r="6"/>
+      </g>
+      <g stroke="#e0e7ff" stroke-width="2.5" fill="none" opacity="0.9">
+        <line x1="90" y1="760" x2="160" y2="800"/>
+        <line x1="160" y1="800" x2="150" y2="850"/>
+        <line x1="160" y1="800" x2="230" y2="790"/>
+        <line x1="90" y1="760" x2="60" y2="820"/>
+      </g>
+      <g fill="#a5b4fc">
+        <circle cx="90" cy="760" r="6"/>
+        <circle cx="160" cy="800" r="8"/>
+        <circle cx="150" cy="850" r="6"/>
+        <circle cx="230" cy="790" r="6"/>
+        <circle cx="60" cy="820" r="5"/>
+      </g>
+
+      <g text-anchor="middle">
+        <text x="800" y="115" font-size="52" font-weight="700" fill="#0f172a">TechneOS</text>
+        <text x="800" y="148" font-size="18" fill="#94a3b8" letter-spacing="1">Operating System for Research</text>
+      </g>
+
+      <line x1="500" y1="195" x2="1100" y2="195" stroke="#e2e8f0" stroke-width="2"/>
+
+      <g text-anchor="middle">
+        <rect x="150" y="285" width="400" height="150" rx="14" fill="#eef2ff" stroke="#c7d2fe" stroke-width="2"/>
+        <text x="350" y="345" font-size="30" font-weight="700" fill="#312e81">Scalability</text>
+        <text x="350" y="380" font-size="16" fill="#4338ca">runs on a single machine</text>
+        <text x="350" y="402" font-size="16" fill="#4338ca">or a cluster</text>
+
+        <rect x="600" y="285" width="400" height="150" rx="14" fill="#eef2ff" stroke="#c7d2fe" stroke-width="2"/>
+        <text x="800" y="345" font-size="30" font-weight="700" fill="#312e81">Traceability</text>
+        <text x="800" y="380" font-size="16" fill="#4338ca">every run pinned to</text>
+        <text x="800" y="402" font-size="16" fill="#4338ca">tool versions + parameters</text>
+
+        <rect x="1050" y="285" width="400" height="150" rx="14" fill="#eef2ff" stroke="#c7d2fe" stroke-width="2"/>
+        <text x="1250" y="345" font-size="30" font-weight="700" fill="#312e81">Reproducibility</text>
+        <text x="1250" y="380" font-size="16" fill="#4338ca">shared, versioned</text>
+        <text x="1250" y="402" font-size="16" fill="#4338ca">artifact, not tribal knowledge</text>
+      </g>
+
+      <rect x="330" y="560" width="940" height="130" rx="16" fill="#4f46e5"/>
+      <text x="800" y="615" font-size="20" font-weight="600" fill="#c7d2fe" text-anchor="middle" letter-spacing="1">THE ASK</text>
+      <text x="800" y="655" font-size="30" font-weight="700" fill="#ffffff" text-anchor="middle">
+        What problem can TechneOS solve for you?
+      </text>
+
+      <g text-anchor="middle">
+        <text x="800" y="800" font-size="20" font-weight="600" fill="#334155">Tianhong Zhang</text>
+        <text x="800" y="828" font-size="17" fill="#94a3b8">https://techneos.example.com</text>
+      </g>
+    </svg>
+  </div>
+
+</div>
+
+<div class="controls">
+  <button class="nav-btn" id="prevBtn" onclick="goTo(current - 1)" aria-label="Previous slide">&#8592;</button>
+  <div class="dots" id="dots"></div>
+  <button class="nav-btn" id="nextBtn" onclick="goTo(current + 1)" aria-label="Next slide">&#8594;</button>
+</div>
+<div class="counter" id="counter"></div>
+
+<script>
+  var slides = document.querySelectorAll('.slide');
+  var dotsContainer = document.getElementById('dots');
+  var current = 0;
+
+  slides.forEach(function (_, i) {
+    var dot = document.createElement('button');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+    dot.onclick = function () { goTo(i); };
+    dotsContainer.appendChild(dot);
+  });
+
+  function goTo(index) {
+    if (index < 0 || index >= slides.length) return;
+    slides[current].classList.remove('active');
+    dotsContainer.children[current].classList.remove('active');
+    current = index;
+    slides[current].classList.add('active');
+    dotsContainer.children[current].classList.add('active');
+    document.getElementById('prevBtn').disabled = current === 0;
+    document.getElementById('nextBtn').disabled = current === slides.length - 1;
+    document.getElementById('counter').textContent =
+      (current + 1) + ' / ' + slides.length + '  —  ' + slides[current].dataset.name;
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') goTo(current + 1);
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') goTo(current - 1);
+    if (e.key === 'f' || e.key === 'F') toggleFullscreen();
+  });
+
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  }
+
+  goTo(0);
+</script>
+
+</body>
+</html>
