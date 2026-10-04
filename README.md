@@ -83,3 +83,11 @@ reference and all build/register commands are in [AGENTS.md](AGENTS.md).
 Each entry ships self-contained — none is a uv workspace member; each pins its own
 deps so heterogeneous trees (native libraries, compiled extensions, conflicting
 version pins) don't fight for one resolution.
+
+## License
+
+The catalog code is licensed under the [Apache License 2.0](LICENSE); see
+[NOTICE](NOTICE). Bundled sample data keeps its source terms: PubChem data is
+public domain, ZINC20 data is free to use with citation (Irwin et al., *J. Chem.
+Inf. Model.* 2020), and the ChEMBL agent queries ChEMBL data, which is licensed
+CC BY-SA 3.0 by EMBL-EBI.
